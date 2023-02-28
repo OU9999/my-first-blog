@@ -1,17 +1,20 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import router from "./Router";
-
+import { RecoilRoot } from "recoil";
+import Router from "./Routes/Router";
+import theme from "./utils/theme";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
-      <RouterProvider router={router} />
-    </ChakraProvider>
+    <RecoilRoot>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initalColorMode} />
+        <Router />
+      </ChakraProvider>
+    </RecoilRoot>
   </React.StrictMode>
 );

@@ -1,8 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
-import Root from "./Root";
-import Home from "./screens/Home";
-import Notes from "./screens/Notes";
-import NotFound from "./screens/NotFound";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Root from "../Root";
+import Home from "./Home";
+import Notes from "./Notes";
+import NotFound from "./NotFound";
 
 const router = createBrowserRouter([
   {
@@ -22,4 +22,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default router;
+export default function Router() {
+  return <RouterProvider router={router} />;
+}
