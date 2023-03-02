@@ -1,6 +1,7 @@
 import {
   Button,
   Center,
+  ColorMode,
   HStack,
   Modal,
   ModalBody,
@@ -9,11 +10,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import styled, { keyframes } from "styled-components";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import { startAnimationAtom } from "../utils/atoms";
 
 const StyledDiv = styled.div`
@@ -25,7 +28,7 @@ const StyledDiv = styled.div`
   transition: 0.5s;
 `;
 
-const StyledSpan = styled.span`
+const StyledSpan = styled.span<{ colorMode: ColorMode }>`
   transition: 0.5s;
   padding: 0.5rem;
   display: flex;
@@ -36,10 +39,12 @@ const StyledSpan = styled.span`
   font-size: 9rem;
   font-weight: bold;
   cursor: pointer;
-  text-shadow: #fff 1px 0 10px;
+  color: white;
+  text-shadow: ${(props) => (props.colorMode === "light" ? "white" : "black")}
+    1px 0 10px;
 
-  &:hover {
-    scale: 1.1;
+  &:hover ~ &:nth-child(n) {
+    filter: blur(5px);
   }
 
   &:hover > i::before {
@@ -72,11 +77,16 @@ const Border = styled.i`
 export default function StartModal() {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const setStartAnimation = useSetRecoilState(startAnimationAtom);
+  const { colorMode } = useColorMode();
+
+  const timeOut = () => {
+    onClose();
+    setStartAnimation(true);
+  };
 
   useEffect(() => {
     onOpen();
-    setStartAnimation(true);
-    setTimeout(() => onClose(), 1500);
+    setTimeout(() => timeOut(), 2000);
   }, []);
 
   return (
@@ -93,22 +103,22 @@ export default function StartModal() {
           {/* _hover={{ filter: "auto", blur: "5px" }} */}
           <Center>
             <StyledDiv>
-              <StyledSpan>
+              <StyledSpan colorMode={colorMode}>
                 <Border></Border>O
               </StyledSpan>
-              <StyledSpan>
+              <StyledSpan colorMode={colorMode}>
                 <Border></Border>U
               </StyledSpan>
-              <StyledSpan>
+              <StyledSpan colorMode={colorMode}>
                 <Border></Border>9
               </StyledSpan>
-              <StyledSpan>
+              <StyledSpan colorMode={colorMode}>
                 <Border></Border>9
               </StyledSpan>
-              <StyledSpan>
+              <StyledSpan colorMode={colorMode}>
                 <Border></Border>9
               </StyledSpan>
-              <StyledSpan>
+              <StyledSpan colorMode={colorMode}>
                 <Border></Border>9
               </StyledSpan>
             </StyledDiv>

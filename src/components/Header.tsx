@@ -29,9 +29,9 @@ export default function Header() {
         position={"fixed"}
         zIndex={"99"}
         _hover={{
-          backgroundColor: "green.100",
           transitionDuration: "0.3s",
           transitionTimingFunction: "ease-in-out",
+          backgroundColor: "green.100",
         }}
         spacing={2}
       >
