@@ -1,20 +1,13 @@
 import {
-  Button,
   Center,
   ColorMode,
-  HStack,
   Modal,
-  ModalBody,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
-  Text,
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { startAnimationAtom } from "../utils/atoms";
@@ -40,8 +33,7 @@ const StyledSpan = styled.span<{ colorMode: ColorMode }>`
   font-weight: bold;
   cursor: pointer;
   color: white;
-  text-shadow: ${(props) => (props.colorMode === "light" ? "white" : "black")}
-    1px 0 10px;
+  text-shadow: black 1px 0 10px;
 
   &:hover ~ &:nth-child(n) {
     filter: blur(5px);
