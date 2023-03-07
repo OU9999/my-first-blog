@@ -67,7 +67,7 @@ const mainBoxVariants: Variants = {
   start: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.5, type: "spring", delay: 0.3 },
+    transition: { duration: 0.5, type: "spring", stiffness: 200, delay: 0.3 },
   },
 };
 
@@ -118,6 +118,8 @@ export default function MainPage() {
     "rock.jpeg",
     "ear.gif",
     "spirited-away.gif",
+    "weather.jpeg",
+    "kimino.png",
   ];
 
   const quotes = [
@@ -383,6 +385,11 @@ export default function MainPage() {
                     title: `사실 트위터 안함 ㅋ`,
                     position: "top",
                     isClosable: true,
+                    icon: (
+                      <Box fontSize={"2xl"}>
+                        <FaTwitter />
+                      </Box>
+                    ),
                   })
                 }
               >
@@ -399,6 +406,11 @@ export default function MainPage() {
                     title: `사실 인스타 안함 ㅋ`,
                     position: "top",
                     isClosable: true,
+                    icon: (
+                      <Box fontSize={"2xl"}>
+                        <FaInstagram />
+                      </Box>
+                    ),
                   })
                 }
               >

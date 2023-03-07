@@ -6,7 +6,7 @@ import Post from "../components/Home/Post";
 export default function Home() {
   return (
     <VStack
-      minH={"200vh"}
+      minH={"auto"}
       justifyContent={"flex-start"}
       alignItems={"flex-start"}
       position={"relative"}

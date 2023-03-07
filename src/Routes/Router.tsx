@@ -3,6 +3,7 @@ import Root from "../Root";
 import Home from "./Home";
 import Notes from "./Notes";
 import NotFound from "./NotFound";
+import Write from "./Write";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "notes",
         element: <Notes />,
+      },
+      {
+        path: "write",
+        element: <Write />,
       },
     ],
   },

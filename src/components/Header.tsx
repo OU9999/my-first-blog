@@ -18,7 +18,10 @@ const headerVariants: Variants = {
     backgroundColor: "rgba(0,0,0,0)",
     color: "#fff",
   },
-  scroll: { backgroundColor: "rgba(255,255,255,0.9)", color: "#000" },
+  scroll: {
+    backgroundColor: "rgba(255,255,255,0.9)",
+    color: "#000",
+  },
 };
 
 export default function Header() {
@@ -34,6 +37,9 @@ export default function Header() {
   };
   const onNotesClick = () => {
     navigation("/notes");
+  };
+  const onWriteClick = () => {
+    navigation("/write");
   };
 
   useEffect(() => {
@@ -56,6 +62,7 @@ export default function Header() {
         p="6"
         px={5}
         py={5}
+        h={"10vh"}
         backgroundColor={"transparent"}
         position={"fixed"}
         zIndex={"99"}
@@ -64,9 +71,11 @@ export default function Header() {
         variants={headerVariants}
         animate={headerAni}
         whileHover={"scroll"}
+        onHoverStart={() => setBoxShadow(true)}
+        onHoverEnd={() => setBoxShadow(false)}
         boxSizing={"border-box"}
       >
-        <Tabs variant="solid-rounded" colorScheme={"twitter"}>
+        <Tabs variant="solid-rounded" colorScheme={"twitter"} isLazy>
           <TabList>
             <Box
               transition={"0.3s"}
@@ -84,6 +93,14 @@ export default function Header() {
             >
               <Tab onClick={onNotesClick}>Notes</Tab>
             </Box>
+            <Box
+              transition={"0.3s"}
+              _hover={{
+                color: "#1A94DA",
+              }}
+            >
+              <Tab onClick={onWriteClick}>Write</Tab>
+            </Box>
           </TabList>
         </Tabs>
 
@@ -91,6 +108,7 @@ export default function Header() {
           aria-label="toggleColorMode"
           onClick={toggleColorMode}
           variant={"solid"}
+          colorScheme={"twitter"}
           icon={<Icon />}
         />
       </HStack>

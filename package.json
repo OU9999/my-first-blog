@@ -13,6 +13,7 @@
     "@types/node": "^12.20.55",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "@uiw/react-md-editor": "^3.20.5",
     "framer-motion": "^6.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,7 +26,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

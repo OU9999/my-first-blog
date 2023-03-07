@@ -1,14 +1,19 @@
 import { Outlet } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import ScrollToTop from "./components/ScrollToTop";
 import StartModal from "./components/StartModal";
+import { writeAtom } from "./utils/atoms";
 
 export default function Root() {
+  const isWrite = useRecoilValue(writeAtom);
   return (
     <>
-      <Header />
+      <ScrollToTop />
+      {isWrite ? null : <Header />}
       <Outlet />
-      <Footer />
+      {isWrite ? null : <Footer />}
       <StartModal />
     </>
   );

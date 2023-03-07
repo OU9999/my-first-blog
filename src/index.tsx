@@ -2,7 +2,7 @@ import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
-import Router from "./Routes/Router";
+import Router from "./routes/Router";
 import theme from "./utils/theme";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

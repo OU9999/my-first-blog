@@ -1,4 +1,12 @@
-import { Box, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  HStack,
+  Image,
+  Text,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
 import { FaEye, FaRegCommentDots } from "react-icons/fa";
 import { GoThreeBars } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs";
@@ -15,6 +23,7 @@ interface IPostProps {
 }
 
 export default function Post({ reverse }: IPostProps) {
+  const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   return (
     <>
       <PostDiv
@@ -46,7 +55,7 @@ export default function Post({ reverse }: IPostProps) {
               cursor="pointer"
               fontSize={"2xl"}
               _hover={{
-                color: "twitter.400",
+                color: twitterColor,
               }}
               transition={"0.3s"}
             >
@@ -86,20 +95,27 @@ export default function Post({ reverse }: IPostProps) {
             />
           </VStack>
         </HStack>
-        <Box
+        <HStack
           position={"absolute"}
           bottom={5}
           left={reverse ? "none" : 5}
           right={reverse ? 5 : "none"}
           fontSize={"3xl"}
-          cursor={"pointer"}
-          _hover={{
-            color: "twitter.400",
-          }}
-          transition={"0.3s"}
         >
-          <BsThreeDots />
-        </Box>
+          <Text
+            cursor={"pointer"}
+            transition={"0.3s"}
+            _hover={{
+              color: twitterColor,
+            }}
+          >
+            <BsThreeDots />
+          </Text>
+          <HStack display={"none"}>
+            <Text>수정</Text>
+            <Text>삭제</Text>
+          </HStack>
+        </HStack>
       </PostDiv>
     </>
   );
