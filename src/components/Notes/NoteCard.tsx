@@ -41,6 +41,7 @@ export default function NoteCard() {
         as={motion.div}
         initial={{ y: 0 }}
         whileHover={{ y: -10, transition: { duration: 0.3 } }}
+        cursor="pointer"
       >
         <Card
           maxW="sm"

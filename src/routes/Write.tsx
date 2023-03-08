@@ -4,12 +4,22 @@ import {
   Flex,
   HStack,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
   useColorModeValue,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import MDEditor from "@uiw/react-md-editor";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { FaImage } from "react-icons/fa";
 import { useMatch, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { writeAtom } from "../utils/atoms";
@@ -24,6 +34,7 @@ export default function Write() {
   const colorMode = useColorModeValue("light", "dark");
   const bgColor = useColorModeValue("FFFFFF", "#0E1117");
   const navigation = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const vhToPixels = (vh: number) => {
     return Math.round(window.innerHeight / (100 / vh));
@@ -35,6 +46,12 @@ export default function Write() {
 
   const onTitleChange = (e: any) => {
     setTitle(e.currentTarget.value);
+  };
+
+  const onSaveClicked = () => {
+    console.log(title);
+    console.log(md);
+    onOpen();
   };
 
   useEffect(() => {
@@ -96,11 +113,11 @@ export default function Write() {
                 임시저장
               </Button>
               <Button
-                onClick={onOutClicked}
+                onClick={onSaveClicked}
                 colorScheme={"twitter"}
                 fontSize={"2xl"}
               >
-                출간하기
+                노트작성
               </Button>
             </Flex>
           </Flex>
@@ -116,80 +133,56 @@ export default function Write() {
             />
           </Box>
         </VStack>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>노트 미리보기</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack width={"full"}>
+                <Flex
+                  flexDir={"column"}
+                  width="full"
+                  height={"48"}
+                  bgColor={bgColor}
+                  justifyContent="center"
+                  alignItems={"center"}
+                >
+                  <Box fontSize={"3xl"}>
+                    <FaImage />
+                  </Box>
+                </Flex>
+                <Text width={"full"} fontWeight="bold" fontSize={"2xl"}>
+                  {title}
+                </Text>
+                <Text
+                  width={"full"}
+                  border="1px solid"
+                  noOfLines={4}
+                  bgColor={bgColor}
+                  px={4}
+                  py={2}
+                  rounded="lg"
+                >
+                  {md}
+                </Text>
+              </VStack>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="twitter"
+                mr={3}
+                onClick={onClose}
+                variant="ghost"
+              >
+                취소
+              </Button>
+              <Button colorScheme="twitter">노트작성</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </HStack>
-      {/* <VStack
-        minH={"100vh"}
-        minW={"100vw"}
-        py={"10"}
-        boxSizing={"border-box"}
-        as={motion.div}
-        initial={{
-          opacity: 0,
-        }}
-        animate={{
-          opacity: 1,
-          transition: { duration: 0.3, type: "linear" },
-        }}
-      >
-        <HStack
-          width={"100vw"}
-          height={"10vh"}
-          overflow={"hidden"}
-          justifyContent={"center"}
-          gap={5}
-        >
-          <Input
-            width={"48vw"}
-            minH={"10vh"}
-            padding={"10"}
-            bgColor={bgColor}
-            placeholder="제목을 입력하세요..."
-            size="lg"
-            fontSize={"4xl"}
-            value={title}
-            onChange={onTitleChange}
-            border={"1px solid"}
-            rounded={"1rem"}
-            fontWeight={"bold"}
-          />
-          <Text
-            width={"48vw"}
-            minH={"10vh"}
-            padding={"3.5"}
-            px={"10"}
-            bgColor={bgColor}
-            size="lg"
-            fontSize={"4xl"}
-            border={"1px solid"}
-            rounded={"1rem"}
-            fontWeight={"bold"}
-          >
-            {title}
-          </Text>
-        </HStack>
-        <HStack width={"100vw"}>
-          <Box width={"50vw"} height={"auto"} data-color-mode={colorMode}>
-            <MDEditor value={md} onChange={setMd} height={vh} preview="edit" />
-          </Box>
-          <Box width={"50vw"} height={"auto"} data-color-mode={colorMode}>
-            <MDEditor
-              style={{ padding: 10 }}
-              value={md}
-              height={vh}
-              preview="preview"
-              hideToolbar={true}
-            />
-          </Box>
-        </HStack>
-        <HStack minH={"10vh"} minW={"100vw"} px={"10"}>
-          <HStack width={"50%"}>
-            <Button onClick={onOutClicked}> ← 나가기</Button>
-            <Button onClick={onOutClicked}> ← 나가기</Button>
-            <Button onClick={onOutClicked}> ← 나가기</Button>
-          </HStack>
-          <Box width={"50%"}></Box>
-        </HStack>
-      </VStack> */}
     </>
   );
 }

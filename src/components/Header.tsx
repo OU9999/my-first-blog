@@ -1,36 +1,45 @@
 import {
   Box,
+  Button,
+  DarkMode,
   HStack,
   IconButton,
-  Tab,
-  TabList,
-  Tabs,
   useColorMode,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { FaMoon, FaSun } from "react-icons/fa";
+import { useMatch, useNavigate } from "react-router-dom";
+import { FaMoon, FaSun, FaUserCircle } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { motion, useAnimation, useScroll, Variants } from "framer-motion";
+
+import { useRecoilValue } from "recoil";
+import { isLoginAtom } from "../utils/atoms";
+import LoginModal from "./Header/LoginModal";
+import LoginPopover from "./Header/LoginPopover";
 
 const headerVariants: Variants = {
   top: {
     backgroundColor: "rgba(0,0,0,0)",
-    color: "#fff",
   },
   scroll: {
-    backgroundColor: "rgba(255,255,255,0.9)",
-    color: "#000",
+    backgroundColor: "rgba(223, 249, 251,0.9)",
   },
 };
 
 export default function Header() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigation = useNavigate();
   const { toggleColorMode } = useColorMode();
+  const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   const Icon = useColorModeValue(FaMoon, FaSun);
   const { scrollY } = useScroll();
   const headerAni = useAnimation();
   const [boxShadow, setBoxShadow] = useState(false);
+  const [textColor, setTextColor] = useState(false);
+  const homeMatch = useMatch("/");
+  const notesMatch = useMatch("/notes");
+  const isLogin = useRecoilValue(isLoginAtom);
 
   const onHomeClick = () => {
     navigation("/");
@@ -42,14 +51,22 @@ export default function Header() {
     navigation("/write");
   };
 
+  const hoverEnd = () => {
+    if (scrollY.get() < 80) {
+      setBoxShadow(false);
+    }
+  };
+
   useEffect(() => {
     scrollY.onChange(() => {
       if (scrollY.get() > 80) {
         headerAni.start("scroll");
         setBoxShadow(true);
+        setTextColor(true);
       } else {
         headerAni.start("top");
         setBoxShadow(false);
+        setTextColor(false);
       }
     });
   }, [scrollY, headerAni]);
@@ -57,61 +74,105 @@ export default function Header() {
   return (
     <>
       <HStack
+        justifyContent={"space-between"}
         minW={"100vw"}
-        boxShadow={boxShadow ? "dark-lg" : "none"}
+        transition={"0.3s"}
         p="6"
         px={5}
         py={5}
         h={"10vh"}
         backgroundColor={"transparent"}
         position={"fixed"}
-        zIndex={"99"}
+        zIndex={"98"}
         as={motion.div}
         spacing={2}
         variants={headerVariants}
         animate={headerAni}
-        whileHover={"scroll"}
         onHoverStart={() => setBoxShadow(true)}
-        onHoverEnd={() => setBoxShadow(false)}
+        onHoverEnd={() => hoverEnd()}
+        boxShadow={boxShadow ? "dark-lg" : "none"}
         boxSizing={"border-box"}
       >
-        <Tabs variant="solid-rounded" colorScheme={"twitter"} isLazy>
-          <TabList>
+        <HStack>
+          <Box
+            transition={"0.3s"}
+            rounded={"md"}
+            fontWeight={"bold"}
+            cursor={"pointer"}
+            onClick={onHomeClick}
+            bgColor={homeMatch ? twitterColor : undefined}
+          >
+            <DarkMode>
+              <Button
+                transition={"0.3s"}
+                colorScheme={"twitter"}
+                variant={"ghost"}
+                textColor={!textColor ? "white" : "black"}
+              >
+                Home
+              </Button>
+            </DarkMode>
+          </Box>
+          <Box
+            transition={"0.3s"}
+            rounded={"md"}
+            fontWeight={"bold"}
+            cursor={"pointer"}
+            onClick={onNotesClick}
+            bgColor={notesMatch ? twitterColor : undefined}
+          >
+            <DarkMode>
+              <Button
+                transition={"0.3s"}
+                colorScheme={"twitter"}
+                variant={"ghost"}
+                textColor={!textColor ? "white" : "black"}
+              >
+                Notes
+              </Button>
+            </DarkMode>
+          </Box>
+          {isLogin ? (
             <Box
               transition={"0.3s"}
-              _hover={{
-                color: "#1A94DA",
-              }}
+              rounded={"md"}
+              fontWeight={"bold"}
+              cursor={"pointer"}
+              onClick={onWriteClick}
             >
-              <Tab onClick={onHomeClick}>Home</Tab>
+              <DarkMode>
+                <Button
+                  transition={"0.3s"}
+                  colorScheme={"twitter"}
+                  variant={"ghost"}
+                  textColor={!textColor ? "white" : "black"}
+                >
+                  Write
+                </Button>
+              </DarkMode>
             </Box>
-            <Box
-              transition={"0.3s"}
-              _hover={{
-                color: "#1A94DA",
-              }}
-            >
-              <Tab onClick={onNotesClick}>Notes</Tab>
-            </Box>
-            <Box
-              transition={"0.3s"}
-              _hover={{
-                color: "#1A94DA",
-              }}
-            >
-              <Tab onClick={onWriteClick}>Write</Tab>
-            </Box>
-          </TabList>
-        </Tabs>
+          ) : null}
 
-        <IconButton
-          aria-label="toggleColorMode"
-          onClick={toggleColorMode}
-          variant={"solid"}
-          colorScheme={"twitter"}
-          icon={<Icon />}
-        />
+          <IconButton
+            aria-label="toggleColorMode"
+            onClick={toggleColorMode}
+            variant={"solid"}
+            colorScheme={"twitter"}
+            icon={<Icon />}
+          />
+        </HStack>
+        {isLogin ? (
+          <LoginPopover />
+        ) : (
+          <IconButton
+            onClick={onOpen}
+            aria-label="usericon"
+            colorScheme={"twitter"}
+            icon={<FaUserCircle />}
+          />
+        )}
       </HStack>
+      {isLogin ? null : <LoginModal isOpen={isOpen} onClose={onClose} />}
     </>
   );
 }

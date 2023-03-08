@@ -9,3 +9,8 @@ export const writeAtom = atom<boolean>({
   key: "write",
   default: false,
 });
+
+export const isLoginAtom = atom<boolean>({
+  key: "isLogin",
+  default: false,
+});

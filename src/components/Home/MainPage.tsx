@@ -52,6 +52,17 @@ const BackGroundCover = styled.div`
   opacity: 0.3;
 `;
 
+const backgroundVariants: Variants = {
+  normal: { opacity: 1 },
+  clicked: {
+    opacity: [1, 0, 1],
+    transition: {
+      duration: 1,
+      type: "linear",
+    },
+  },
+};
+
 const mainTextVariants: Variants = {
   normal: { y: -100, opacity: 0 },
   start: {
@@ -120,6 +131,9 @@ export default function MainPage() {
     "spirited-away.gif",
     "weather.jpeg",
     "kimino.png",
+    "zootopia.jpeg",
+    "mermaid.gif",
+    "suzeme.jpeg",
   ];
 
   const quotes = [
@@ -163,6 +177,7 @@ export default function MainPage() {
   const mainBoxAni = useAnimation();
   const quoteAni = useAnimation();
   const resetButtonAni = useAnimation();
+  const backgroundAni = useAnimation();
   const toast = useToast();
 
   const onOClicked = () => {
@@ -193,6 +208,7 @@ export default function MainPage() {
 
   const onResetButtonClicked = () => {
     quoteAni.start("clicked");
+    backgroundAni.start("clicked");
     resetButtonAni.start("clicked");
     setTimeout(() => setBgAndQuote(), 500);
   };
@@ -202,6 +218,11 @@ export default function MainPage() {
       title: `복사 완료!`,
       position: "top",
       isClosable: true,
+      icon: (
+        <Box fontSize={"2xl"}>
+          <MdEmail />
+        </Box>
+      ),
     });
     navigator.clipboard.writeText("omh232323@gmail.com");
   };
@@ -220,7 +241,12 @@ export default function MainPage() {
   }, [startAnimation]);
   return (
     <>
-      <BackGround bg={backgroundImage} />
+      <BackGround
+        bg={backgroundImage}
+        variants={backgroundVariants}
+        animate={backgroundAni}
+        initial={"normal"}
+      />
       <BackGroundCover />
       <Center w={"100vw"} h={"100vh"}>
         <Flex

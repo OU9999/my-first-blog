@@ -1,13 +1,28 @@
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ScrollToTop from "./components/ScrollToTop";
 import StartModal from "./components/StartModal";
-import { writeAtom } from "./utils/atoms";
+import { isLoginAtom, writeAtom } from "./utils/atoms";
+import { authService } from "./utils/firebase";
 
 export default function Root() {
   const isWrite = useRecoilValue(writeAtom);
+  const setIsLogin = useSetRecoilState(isLoginAtom);
+
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLogin(true);
+        console.log(user);
+      } else {
+        setIsLogin(false);
+      }
+    });
+  }, []);
+
   return (
     <>
       <ScrollToTop />
