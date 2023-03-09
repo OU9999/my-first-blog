@@ -1,12 +1,13 @@
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import { SiFirebase, SiReact, SiTypescript } from "react-icons/si";
 
 export default function Footer() {
   return (
     <>
       <VStack width={"100vw"} mt={100} mb={10}>
-        <HStack fontSize={"xl"}>
+        <HStack fontSize={"md"} fontWeight={"semibold"}>
           <Text color={"gray"}>STACK :</Text>
           <Box
             as={motion.div}
@@ -27,6 +28,12 @@ export default function Footer() {
 
           <SiTypescript color="#3178C6" />
           <SiFirebase color=" #FFCA28" />
+        </HStack>
+        <HStack>
+          <FaGithub />
+          <Link color={"gray"} href="https://github.com/OU9999" isExternal>
+            github.com/OU9999
+          </Link>
         </HStack>
       </VStack>
     </>

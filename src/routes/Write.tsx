@@ -4,24 +4,17 @@ import {
   Flex,
   HStack,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
   useColorModeValue,
   useDisclosure,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import MDEditor from "@uiw/react-md-editor";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FaImage } from "react-icons/fa";
 import { useMatch, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import AddModal from "../components/Write/AddModal";
 import { writeAtom } from "../utils/atoms";
 
 export default function Write() {
@@ -32,9 +25,10 @@ export default function Write() {
   const [secondVh, setSecondVh] = useState<number>();
   const [title, setTitle] = useState<string>("");
   const colorMode = useColorModeValue("light", "dark");
-  const bgColor = useColorModeValue("FFFFFF", "#0E1117");
+  const bgColor = useColorModeValue("#ecf0f1", "#0E1117");
   const navigation = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   const vhToPixels = (vh: number) => {
     return Math.round(window.innerHeight / (100 / vh));
@@ -49,9 +43,16 @@ export default function Write() {
   };
 
   const onSaveClicked = () => {
-    console.log(title);
-    console.log(md);
-    onOpen();
+    if (title !== "") {
+      onOpen();
+    } else {
+      toast({
+        title: "제목이 비어있습니다.",
+        position: "top",
+        isClosable: true,
+        status: "error",
+      });
+    }
   };
 
   useEffect(() => {
@@ -133,55 +134,13 @@ export default function Write() {
             />
           </Box>
         </VStack>
-
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>노트 미리보기</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <VStack width={"full"}>
-                <Flex
-                  flexDir={"column"}
-                  width="full"
-                  height={"48"}
-                  bgColor={bgColor}
-                  justifyContent="center"
-                  alignItems={"center"}
-                >
-                  <Box fontSize={"3xl"}>
-                    <FaImage />
-                  </Box>
-                </Flex>
-                <Text width={"full"} fontWeight="bold" fontSize={"2xl"}>
-                  {title}
-                </Text>
-                <Text
-                  width={"full"}
-                  border="1px solid"
-                  noOfLines={4}
-                  bgColor={bgColor}
-                  px={4}
-                  py={2}
-                  rounded="lg"
-                >
-                  {md}
-                </Text>
-              </VStack>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                colorScheme="twitter"
-                mr={3}
-                onClick={onClose}
-                variant="ghost"
-              >
-                취소
-              </Button>
-              <Button colorScheme="twitter">노트작성</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <AddModal
+          isOpen={isOpen}
+          onClose={onClose}
+          bgColor={bgColor}
+          title={title}
+          md={md!}
+        />
       </HStack>
     </>
   );
