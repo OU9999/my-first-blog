@@ -27,9 +27,15 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { uuidv4 } from "@firebase/util";
-import { addDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { FaImage } from "react-icons/fa";
 import { dbService, storageService } from "../../utils/firebase";
@@ -42,6 +48,12 @@ interface IAddModalProps {
   md: string;
 }
 
+export interface ICategorys {
+  id: string;
+  category: string;
+  createdAt: number;
+}
+
 export default function AddModal({
   isOpen,
   onClose,
@@ -52,11 +64,30 @@ export default function AddModal({
   const [thumbnail, setThumbnail] = useState<string | undefined>();
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   const thumbnailInput = useRef<HTMLInputElement>(null);
+  const [categorys, setCategorys] = useState<ICategorys[]>([]);
   const [newCategory, setNewCategory] = useState<string | undefined>();
   const [selectedCategory, setSelectedCategory] = useState<
     string | undefined
   >();
   const toast = useToast();
+
+  const getCategorys = async () => {
+    const q = query(
+      collection(dbService, "categorys"),
+      orderBy("createdAt", "asc")
+    );
+    onSnapshot(q, (snapshot) => {
+      const categoryArr: any = snapshot.docs.map((category) => ({
+        id: category.id + "",
+        ...category.data(),
+      }));
+      setCategorys(categoryArr);
+    });
+  };
+
+  useEffect(() => {
+    getCategorys();
+  }, []);
 
   const onThumbnailButtonClicked = (e: any) => {
     thumbnailInput?.current?.click();
@@ -64,6 +95,30 @@ export default function AddModal({
 
   const onClearThumbnailButtonClicked = (e: any) => {
     setThumbnail(undefined);
+  };
+
+  const onNewCategoryButtonClicked = async () => {
+    let errorState = false;
+    categorys.map((category) => {
+      if (category.category === newCategory) {
+        toast({
+          title: "이미 있는 카테고리입니다.",
+          position: "top",
+          isClosable: true,
+          status: "error",
+        });
+        errorState = true;
+      }
+    });
+
+    if (errorState) {
+    } else {
+      await addDoc(collection(dbService, "categorys"), {
+        category: newCategory,
+        createdAt: Date.now(),
+      });
+    }
+    setNewCategory("");
   };
 
   const onFileChange = ({
@@ -115,6 +170,7 @@ export default function AddModal({
       isClosable: true,
     });
   };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -224,7 +280,11 @@ export default function AddModal({
                           }
                         />
                       </InputGroup>
-                      <IconButton icon={<BiPlus />} aria-label="add" />
+                      <IconButton
+                        icon={<BiPlus />}
+                        aria-label="add"
+                        onClick={onNewCategoryButtonClicked}
+                      />
                     </HStack>
                     <Select
                       placeholder="카테고리를 선택해주세요!"
@@ -232,9 +292,13 @@ export default function AddModal({
                         setSelectedCategory(e.currentTarget.value)
                       }
                     >
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
+                      {categorys.map((category) => (
+                        <>
+                          <option value={category.category}>
+                            {category.category}
+                          </option>
+                        </>
+                      ))}
                     </Select>
                   </VStack>
                 </AccordionPanel>

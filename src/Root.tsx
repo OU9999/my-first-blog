@@ -16,7 +16,6 @@ export default function Root() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLogin(true);
-        console.log(user);
       } else {
         setIsLogin(false);
       }

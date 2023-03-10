@@ -14,3 +14,8 @@ export const isLoginAtom = atom<boolean>({
   key: "isLogin",
   default: false,
 });
+
+export const isNotesAtom = atom<boolean>({
+  key: "isNotes",
+  default: false,
+});

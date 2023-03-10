@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { motion, useAnimation, useScroll, Variants } from "framer-motion";
 
 import { useRecoilValue } from "recoil";
-import { isLoginAtom } from "../utils/atoms";
+import { isLoginAtom, isNotesAtom } from "../utils/atoms";
 import LoginModal from "./Header/LoginModal";
 import LoginPopover from "./Header/LoginPopover";
 
@@ -38,14 +38,19 @@ export default function Header() {
   const [boxShadow, setBoxShadow] = useState(false);
   const [textColor, setTextColor] = useState(false);
   const homeMatch = useMatch("/");
-  const notesMatch = useMatch("/notes");
+  const notesMatch = useMatch("/notes/:category");
   const isLogin = useRecoilValue(isLoginAtom);
+  const isNotes = useRecoilValue(isNotesAtom);
 
   const onHomeClick = () => {
     navigation("/");
   };
   const onNotesClick = () => {
-    navigation("/notes");
+    if (isNotes) {
+      window.scrollTo(0, 0);
+    } else {
+      navigation("/notes");
+    }
   };
   const onWriteClick = () => {
     navigation("/write");

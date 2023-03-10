@@ -16,15 +16,12 @@ import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 import { FaEye, FaRegCommentDots } from "react-icons/fa";
 import { BiTimeFive } from "react-icons/bi";
+import { dateFormatter } from "../../utils/utilsFn";
 
 const cardVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: -100,
-  },
   show: {
-    opacity: 1,
-    y: 0,
+    opacity: [0, 1],
+    y: [-100, 0],
     transition: {
       duration: 0.8,
       type: "spring",
@@ -33,10 +30,24 @@ const cardVariants: Variants = {
   },
 };
 
-export default function NoteCard() {
+interface INoteCardProps {
+  title: string;
+  md: string;
+  category: string;
+  createdAt: number;
+  thumbnailUrl: string;
+}
+
+export default function NoteCard({
+  title,
+  md,
+  category,
+  createdAt,
+  thumbnailUrl,
+}: INoteCardProps) {
   const [magnification, setMagnification] = useState(false);
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
-
+  const date = dateFormatter(createdAt);
   return (
     <>
       <Box
@@ -50,6 +61,9 @@ export default function NoteCard() {
           minH={"sm"}
           as={motion.div}
           variants={cardVariants}
+          initial="normal"
+          animate="show"
+          exit="exit"
           boxShadow={"2xl"}
           onHoverStart={() => setMagnification(true)}
           onHoverEnd={() => setMagnification(false)}
@@ -57,7 +71,7 @@ export default function NoteCard() {
           <CardBody>
             <Box overflow={"hidden"} borderRadius="lg">
               <Image
-                src="https://velog.velcdn.com/images/ou9999/post/1491df4e-9d9a-4fef-b93b-75a950eb5d88/image.png"
+                src={thumbnailUrl}
                 alt="thumbnail"
                 borderRadius="lg"
                 transform={"auto"}
@@ -75,16 +89,13 @@ export default function NoteCard() {
                   color: twitterColor,
                 }}
               >
-                SSR과 CSR? 정적 웹 사이트와 동적 웹 사이트?
+                {title}
               </Heading>
               <Text noOfLines={4} minH={"24"}>
-                SSR과 CSR은 모두 웹 애플리케이션에서 클라이언트 측에서
-                렌더링되는 방식을 의미합니다.SSR 는 전통적인 PHP, JSP, ASP 혹은
-                최근에는 Next.js 등을 사용하여 서버 단에서 HTML/CSS 를 생성하여
-                사용자에게 그 결과물만을 전달하는 방식이다.SSR
+                {md}
               </Text>
               <Button colorScheme={"twitter"} fontSize="lg" width={"50%"}>
-                HTML5 / CSS3
+                {category}
               </Button>
             </Stack>
           </CardBody>
@@ -99,7 +110,7 @@ export default function NoteCard() {
                 alignItems={"center"}
               >
                 <BiTimeFive />
-                <Text>2023.03.07</Text>
+                <Text>{date}</Text>
               </HStack>
             </HStack>
           </CardFooter>

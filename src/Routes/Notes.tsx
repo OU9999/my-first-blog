@@ -9,15 +9,21 @@ import {
   VStack,
   IconButton,
   HStack,
+  MenuOptionGroup,
+  MenuItemOption,
 } from "@chakra-ui/react";
-import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { AnimatePresence, motion, useAnimation, Variants } from "framer-motion";
+import { useEffect, useState } from "react";
 import { BsEye } from "react-icons/bs";
 import { FaReact } from "react-icons/fa";
 import { GoThreeBars } from "react-icons/go";
 import { SiJavascript, SiTypescript } from "react-icons/si";
+import { Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NoteCard from "../components/Notes/NoteCard";
+import { ICategorys } from "../components/Write/AddModal";
+import { dbService } from "../utils/firebase";
 
 const BackGround = styled(motion.div)<{ bg: string }>`
   width: 100vw;
@@ -49,23 +55,70 @@ const BackGroundCover = styled.div`
   opacity: 0.3;
 `;
 
-const gridVariants: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
+export interface INotes {
+  id: string;
+  category: string;
+  createdAt: number;
+  title: string;
+  md: string;
+  thumbnailUrl: string;
+}
+export const allCategory = {
+  id: "",
+  category: "ALL",
+  createdAt: 1,
 };
 
 export default function Notes() {
-  const [tag, setTag] = useState("ALL");
-  const onTagButtonClicked = (e: any) => {
-    setTag(e.currentTarget.value);
+  const navigation = useNavigate();
+  const [tag, setTags] = useState<string>(allCategory.category);
+  const [notes, setNotes] = useState<INotes[] | undefined>(undefined);
+  const [categorys, setCategorys] = useState<ICategorys[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    allCategory.category
+  );
+
+  const onSetCategoryButtonClicked = (e: any) => {
+    setTags(e.currentTarget.value);
+    setSelectedCategory(e.currentTarget.value);
+    navigation(`${encodeURIComponent(e.currentTarget.value).toLowerCase()}`);
   };
+
+  const getNotes = async () => {
+    const q = query(
+      collection(dbService, "notes"),
+      orderBy("createdAt", "desc")
+    );
+    onSnapshot(q, (snapshot) => {
+      const notesArr: any = snapshot.docs.map((note) => ({
+        id: note.id + "",
+        ...note.data(),
+      }));
+      setNotes(notesArr);
+    });
+  };
+
+  const getCategorys = async () => {
+    const q = query(
+      collection(dbService, "categorys"),
+      orderBy("createdAt", "asc")
+    );
+    onSnapshot(q, (snapshot) => {
+      const categoryArr: any = snapshot.docs.map((category) => ({
+        id: category.id + "",
+        ...category.data(),
+      }));
+      setCategorys([allCategory, ...categoryArr]);
+    });
+  };
+
+  useEffect(() => {
+    getNotes();
+    getCategorys();
+    setSelectedCategory(allCategory.category);
+    navigation(`${encodeURIComponent(selectedCategory).toLowerCase()}`);
+  }, []);
+
   return (
     <VStack minH={"150vh"} justifyContent={"flex-start"} position={"relative"}>
       <BackGround bg="/assets/imgs/weather.jpeg" />
@@ -83,7 +136,7 @@ export default function Notes() {
           padding={"10"}
           rounded={"2xl"}
         >
-          <Heading>TAG : {tag}</Heading>
+          <Heading>Category : {tag}</Heading>
           <Menu>
             <MenuButton
               as={IconButton}
@@ -92,7 +145,19 @@ export default function Notes() {
               variant="outline"
             />
             <MenuList>
-              <MenuItem
+              {categorys.map((category) => (
+                <>
+                  <MenuItem
+                    key={category.id}
+                    value={category.category}
+                    onClick={(e) => onSetCategoryButtonClicked(e)}
+                    px={"7"}
+                  >
+                    {category.category}
+                  </MenuItem>
+                </>
+              ))}
+              {/* <MenuItem
                 icon={<BsEye />}
                 value={"ALL"}
                 onClick={(e) => onTagButtonClicked(e)}
@@ -119,12 +184,13 @@ export default function Notes() {
                 onClick={(e) => onTagButtonClicked(e)}
               >
                 JavaScript
-              </MenuItem>
+              </MenuItem> */}
             </MenuList>
           </Menu>
         </HStack>
 
-        <AnimatePresence>
+        <Outlet context={{ selectedCategory, notes, categorys }} />
+        {/* <AnimatePresence>
           <Grid
             templateColumns={"repeat(3, 1fr)"}
             px={10}
@@ -132,14 +198,20 @@ export default function Notes() {
             rowGap={16}
             as={motion.div}
             variants={gridVariants}
-            initial="hidden"
-            animate="show"
+            animate={gridAni}
           >
-            {[1, 2, 3, 4, 32, 521, 512, 34, 3123].map((i) => (
-              <NoteCard />
-            ))}
+            {notes &&
+              notes.map((note) => (
+                <NoteCard
+                  key={note.id}
+                  title={note.title}
+                  md={note.md}
+                  category={note.category}
+                  createdAt={note.createdAt}
+                />
+              ))}
           </Grid>
-        </AnimatePresence>
+        </AnimatePresence> */}
       </VStack>
     </VStack>
   );

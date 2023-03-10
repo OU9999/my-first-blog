@@ -20,7 +20,7 @@ import { MdEmail, MdReplay } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { images, quotes } from "../../constants/mainPageUtils";
+import { images, quotes } from "../../constants/mainPageArray";
 import { startAnimationAtom } from "../../utils/atoms";
 
 const BackGround = styled(motion.div)<{ bg: string }>`
