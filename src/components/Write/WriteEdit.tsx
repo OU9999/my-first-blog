@@ -12,24 +12,37 @@ import {
 import MDEditor from "@uiw/react-md-editor";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import AddModal from "../components/Write/AddModal";
-import { isLoginAtom, writeAtom } from "../utils/atoms";
+import { isLoginAtom, writeAtom } from "../../utils/atoms";
+import AddModal from "./AddModal";
 
-export default function Write() {
-  const isWriteMatch = useMatch("/write");
+export default function WriteEdit() {
+  const loc = useLocation();
+  const detail = loc.state;
+  const docId = loc.pathname.slice(-20);
+  const isWriteMatch = useMatch("/write/:writeid");
   const setIsWrite = useSetRecoilState(writeAtom);
-  const [md, setMd] = useState<string | undefined>("# 내용을 입력하세요...");
+  const [md, setMd] = useState<string | undefined>(detail.md);
   const [vh, setVh] = useState<number>();
   const [secondVh, setSecondVh] = useState<number>();
-  const [title, setTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>(detail.title);
   const colorMode = useColorModeValue("light", "dark");
   const bgColor = useColorModeValue("#ecf0f1", "#0E1117");
   const navigation = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const isLogin = useRecoilValue(isLoginAtom);
+
+  // const onDeleteClick = async () => {
+  //   const ok = window.confirm("진짜 지울거야?");
+  //   if (ok) {
+  //     await deleteDoc(doc(dbService, "notes", docId));
+  //     await deleteObject(ref(storageService, detail?.thumbnailUrl));
+  //   }
+  // };
+
+  useEffect(() => {}, []);
 
   const vhToPixels = (vh: number) => {
     return Math.round(window.innerHeight / (100 / vh));
@@ -96,7 +109,7 @@ export default function Write() {
             mt={"3"}
             padding={"10"}
             bgColor={bgColor}
-            placeholder="제목을 입력하세요..."
+            placeholder="se제목을 입력하세요..."
             size="lg"
             fontSize={"4xl"}
             value={title}
@@ -150,6 +163,9 @@ export default function Write() {
           bgColor={bgColor}
           title={title}
           md={md!}
+          thumbnailUrl={detail.thumbnailUrl}
+          defaultCategory={detail.category}
+          docId={detail.docId}
         />
       </HStack>
     </>

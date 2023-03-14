@@ -1,18 +1,10 @@
 import { VStack } from "@chakra-ui/react";
-import ReactMarkdown from "react-markdown";
-
-const md = `
-# hello?
-
-**test**
-
-normal
-`;
+import EntryPage from "../components/Entry/EntryPage";
 
 export default function Entry() {
   return (
-    <VStack height={"100vh"} width="100vw">
-      <ReactMarkdown>{md}</ReactMarkdown>
+    <VStack height={"auto"} width="100vw">
+      <EntryPage />
     </VStack>
   );
 }

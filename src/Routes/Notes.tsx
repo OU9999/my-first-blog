@@ -1,6 +1,5 @@
 import {
   Center,
-  Grid,
   Heading,
   Menu,
   MenuButton,
@@ -9,19 +8,13 @@ import {
   VStack,
   IconButton,
   HStack,
-  MenuOptionGroup,
-  MenuItemOption,
 } from "@chakra-ui/react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { AnimatePresence, motion, useAnimation, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BsEye } from "react-icons/bs";
-import { FaReact } from "react-icons/fa";
 import { GoThreeBars } from "react-icons/go";
-import { SiJavascript, SiTypescript } from "react-icons/si";
 import { Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import NoteCard from "../components/Notes/NoteCard";
 import { ICategorys } from "../components/Write/AddModal";
 import { dbService } from "../utils/firebase";
 

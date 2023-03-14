@@ -1,4 +1,4 @@
-import { Center, Grid, Heading } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import { AnimatePresence, motion, useAnimation, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -13,7 +13,6 @@ const gridVariants: Variants = {
     opacity: [0, 1],
     transition: {
       duration: 0.8,
-      staggerChildren: 1,
     },
   },
 };
@@ -66,6 +65,7 @@ export default function CategorySelected() {
               notes.map((note) => (
                 <NoteCard
                   key={note.id}
+                  link={note.id}
                   title={note.title}
                   md={note.md}
                   category={note.category}
@@ -78,6 +78,7 @@ export default function CategorySelected() {
                 note.category === selectedCategory ? (
                   <NoteCard
                     key={note.id}
+                    link={note.id}
                     title={note.title}
                     md={note.md}
                     category={note.category}

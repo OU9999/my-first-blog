@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import EntryPage from "../components/Entry/EntryPage";
 import CategorySelected from "../components/Notes/CategorySelected";
+import WriteEdit from "../components/Write/WriteEdit";
 import Root from "../Root";
 import Entry from "./Entry";
 import Home from "./Home";
@@ -32,7 +34,11 @@ const router = createBrowserRouter([
         element: <Write />,
       },
       {
-        path: "entry",
+        path: "write/:writeid",
+        element: <WriteEdit />,
+      },
+      {
+        path: "entry/:pageid",
         element: <Entry />,
       },
     ],

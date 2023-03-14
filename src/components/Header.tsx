@@ -137,26 +137,25 @@ export default function Header() {
               </Button>
             </DarkMode>
           </Box>
-          {isLogin ? (
-            <Box
-              transition={"0.3s"}
-              rounded={"md"}
-              fontWeight={"bold"}
-              cursor={"pointer"}
-              onClick={onWriteClick}
-            >
-              <DarkMode>
-                <Button
-                  transition={"0.3s"}
-                  colorScheme={"twitter"}
-                  variant={"ghost"}
-                  textColor={!textColor ? "white" : "black"}
-                >
-                  Write
-                </Button>
-              </DarkMode>
-            </Box>
-          ) : null}
+
+          <Box
+            transition={"0.3s"}
+            rounded={"md"}
+            fontWeight={"bold"}
+            cursor={"pointer"}
+            onClick={onWriteClick}
+          >
+            <DarkMode>
+              <Button
+                transition={"0.3s"}
+                colorScheme={"twitter"}
+                variant={"ghost"}
+                textColor={!textColor ? "white" : "black"}
+              >
+                Write
+              </Button>
+            </DarkMode>
+          </Box>
 
           <IconButton
             aria-label="toggleColorMode"

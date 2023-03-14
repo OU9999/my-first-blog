@@ -30,9 +30,11 @@ import { uuidv4 } from "@firebase/util";
 import {
   addDoc,
   collection,
+  doc,
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useEffect, useRef, useState } from "react";
@@ -46,6 +48,9 @@ interface IAddModalProps {
   bgColor: string;
   title: string;
   md: string;
+  thumbnailUrl?: string;
+  defaultCategory?: string;
+  docId?: string;
 }
 
 export interface ICategorys {
@@ -60,15 +65,17 @@ export default function AddModal({
   bgColor,
   title,
   md,
+  thumbnailUrl,
+  defaultCategory,
 }: IAddModalProps) {
-  const [thumbnail, setThumbnail] = useState<string | undefined>();
+  const [thumbnail, setThumbnail] = useState<string | undefined>(thumbnailUrl);
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   const thumbnailInput = useRef<HTMLInputElement>(null);
   const [categorys, setCategorys] = useState<ICategorys[]>([]);
   const [newCategory, setNewCategory] = useState<string | undefined>();
-  const [selectedCategory, setSelectedCategory] = useState<
-    string | undefined
-  >();
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    defaultCategory
+  );
   const toast = useToast();
 
   const getCategorys = async () => {
@@ -134,41 +141,8 @@ export default function AddModal({
     }
   };
 
-  const onAddButtonClick = async () => {
-    if (selectedCategory === undefined || selectedCategory === "") {
-      toast({
-        title: "카테고리를 설정해주세요!",
-        position: "top",
-        isClosable: true,
-        status: "error",
-      });
-      return;
-    }
-    const thumbnailRef = ref(storageService, `notes/${uuidv4()}`);
-    let getThumbnailUrl = "";
-    if (thumbnail) {
-      const response = await uploadString(
-        thumbnailRef,
-        thumbnail as string,
-        "data_url"
-      );
-      getThumbnailUrl = await getDownloadURL(response.ref);
-    }
-    await addDoc(collection(dbService, "notes"), {
-      md: md,
-      title: title,
-      category: selectedCategory,
-      createdAt: Date.now(),
-      thumbnailUrl: getThumbnailUrl,
-    });
-    setThumbnail(undefined);
-    setSelectedCategory(undefined);
-    onClose();
-    toast({
-      title: "노트작성 완료!",
-      position: "top",
-      isClosable: true,
-    });
+  const fuck = async () => {
+    console.log(selectedCategory);
   };
 
   return (
@@ -288,6 +262,7 @@ export default function AddModal({
                     </HStack>
                     <Select
                       placeholder="카테고리를 선택해주세요!"
+                      defaultValue={defaultCategory}
                       onChange={(e) =>
                         setSelectedCategory(e.currentTarget.value)
                       }
@@ -314,8 +289,8 @@ export default function AddModal({
             >
               취소
             </Button>
-            <Button colorScheme="twitter" onClick={onAddButtonClick}>
-              노트작성
+            <Button colorScheme="twitter" onClick={fuck}>
+              업데이트
             </Button>
           </ModalFooter>
         </ModalContent>
