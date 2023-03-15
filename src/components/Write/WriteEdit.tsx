@@ -141,7 +141,7 @@ export default function WriteEdit() {
                 colorScheme={"twitter"}
                 fontSize={"2xl"}
               >
-                노트작성
+                업데이트
               </Button>
             </Flex>
           </Flex>
@@ -166,6 +166,7 @@ export default function WriteEdit() {
           thumbnailUrl={detail.thumbnailUrl}
           defaultCategory={detail.category}
           docId={detail.docId}
+          isEdit={true}
         />
       </HStack>
     </>

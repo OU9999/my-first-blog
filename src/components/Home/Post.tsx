@@ -13,16 +13,25 @@ import { GoThreeBars } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import LoginPopover from "../Header/LoginPopover";
 import { useRecoilValue } from "recoil";
 import { isLoginAtom } from "../../utils/atoms";
 import LoginModal from "../Header/LoginModal";
 import UpdatePopover from "./UpdatePopover";
-import { selectBasicThumbnail } from "../../utils/utilsFn";
+import { dateFormatter, selectBasicThumbnail } from "../../utils/utilsFn";
+import { BiTimeFive } from "react-icons/bi";
+import reset from "styled-reset";
+import MDEditor from "@uiw/react-md-editor";
 
 const PostDiv = styled(Box)`
   &:hover img {
     transform: scale(1.15);
+  }
+`;
+
+const NoStyle = styled.div`
+  ${reset}
+  img,a,blockquote {
+    display: none;
   }
 `;
 
@@ -46,8 +55,11 @@ export default function Post({
   link,
 }: IPostProps) {
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
+  const colorMode = useColorModeValue("light", "dark");
+  const mdBgColor = useColorModeValue(undefined, "#2D3748");
   const isLogin = useRecoilValue(isLoginAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const date = dateFormatter(createdAt);
 
   return (
     <>
@@ -55,10 +67,12 @@ export default function Post({
         position={"relative"}
         rounded="2xl"
         width={"70vw"}
-        height={"40vh"}
+        height={"35vh"}
         border={"1px"}
         overflow={"hidden"}
         boxShadow={"dark-lg"}
+        bgColor={mdBgColor}
+        transition={"0.3s"}
       >
         <HStack
           width={"100%"}
@@ -92,7 +106,6 @@ export default function Post({
                 {title}
               </Heading>
             </Link>
-
             <HStack gap={1}>
               <FaEye />
               <FaRegCommentDots />
@@ -104,8 +117,31 @@ export default function Post({
                 <GoThreeBars />
                 <Text>{category}</Text>
               </HStack>
+              <HStack
+                spacing={1}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <BiTimeFive />
+                <Text>{date}</Text>
+              </HStack>
             </HStack>
-            <Text noOfLines={4}>{md}</Text>
+            <Box
+              width={"auto"}
+              h={"24"}
+              noOfLines={5}
+              data-color-mode={colorMode}
+              zIndex={2}
+            >
+              <NoStyle>
+                <MDEditor.Markdown
+                  source={md}
+                  style={{
+                    backgroundColor: mdBgColor,
+                  }}
+                />
+              </NoStyle>
+            </Box>
           </VStack>
           <VStack width={"40%"} height={"100%"} overflow={"hidden"}>
             {thumbnailUrl === "" ? (
@@ -133,7 +169,13 @@ export default function Post({
           fontSize={"3xl"}
         >
           {isLogin ? (
-            <UpdatePopover thumbnailUrl={thumbnailUrl} id={link} />
+            <UpdatePopover
+              thumbnailUrl={thumbnailUrl}
+              id={link}
+              title={title}
+              md={md}
+              category={category}
+            />
           ) : (
             <Text
               onClick={onOpen}

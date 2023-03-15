@@ -90,6 +90,8 @@ export default function NoteCard({
                   }}
                 >
                   <Image
+                    width={"full"}
+                    h={"48"}
                     src={selectBasicThumbnail(category)}
                     alt="thumbnail"
                     borderRadius="lg"
@@ -106,6 +108,8 @@ export default function NoteCard({
                   }}
                 >
                   <Image
+                    width={"full"}
+                    h={"48"}
                     src={thumbnailUrl}
                     alt="thumbnail"
                     borderRadius="lg"

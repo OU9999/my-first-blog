@@ -15,6 +15,7 @@ import { INotes } from "./Notes";
 
 export default function Home() {
   const [notes, setNotes] = useState<INotes[] | undefined>(undefined);
+
   const getNotes = async () => {
     const q = query(
       collection(dbService, "notes"),
@@ -43,7 +44,7 @@ export default function Home() {
     >
       <MainPage />
       <VStack w={"100%"} justifyContent={"center"}>
-        <Heading mb={5}>Recent Notes</Heading>
+        <Heading my={10}>Recent Notes</Heading>
         <VStack gap={10}>
           {notes?.map((note, index) => (
             <Post

@@ -8,19 +8,23 @@ import {
   LightMode,
   Text,
   useColorModeValue,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import MDEditor from "@uiw/react-md-editor";
-import { deleteDoc, doc, getDoc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
+import { doc, getDoc } from "firebase/firestore";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { BiTimeFive } from "react-icons/bi";
+import { GoThreeBars } from "react-icons/go";
 import { useLocation, Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { isLoginAtom } from "../../utils/atoms";
-import { dbService, storageService } from "../../utils/firebase";
-import { selectBasicThumbnail } from "../../utils/utilsFn";
+import { dbService } from "../../utils/firebase";
+import { dateFormatter, selectBasicThumbnail } from "../../utils/utilsFn";
+import DeleteModal from "../DeleteModal";
+import EntryFooter from "./EntryFooter";
 
 const BackGround = styled(motion.div)<{ bg: string | undefined }>`
   width: 100vw;
@@ -52,10 +56,13 @@ const BackGroundCover = styled.div`
   opacity: 0.3;
 `;
 
-/* 
-custom style for md view 
-const CustomStyle = styled.div``;
-*/
+//custom style for md view
+const CustomStyle = styled.div`
+  blockquote {
+    background-color: gray;
+    border: none;
+  }
+`;
 
 export interface IDetail {
   category: string;
@@ -71,24 +78,23 @@ export default function EntryPage() {
   const docId = loc.pathname.slice(-20);
   const [detail, setDetail] = useState<IDetail>();
   const isLogin = useRecoilValue(isLoginAtom);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const date = dateFormatter(detail?.createdAt!);
 
   const getDetail = async () => {
     const ref = doc(dbService, "notes", docId);
     const snap = await getDoc(ref);
     const arr = snap.data();
     setDetail(arr as IDetail);
+    console.log("retry");
   };
 
-  const onDeleteClick = async () => {
-    const ok = window.confirm("진짜 지울거야?");
-    if (ok) {
-      await deleteDoc(doc(dbService, "notes", docId));
-      await deleteObject(ref(storageService, detail?.thumbnailUrl));
-    }
-  };
+  const refreshDetail = useCallback(() => {
+    getDetail();
+  }, []);
 
   useEffect(() => {
-    getDetail();
+    refreshDetail();
   }, []);
 
   return (
@@ -102,17 +108,37 @@ export default function EntryPage() {
         zIndex={2}
         position={"relative"}
       >
-        <VStack gap={3}>
+        <VStack gap={5}>
           <Heading textShadow={"#000 1px 0 10px"} fontSize={"5xl"}>
             {detail?.title}
           </Heading>
-          <Text
-            textShadow={"#000 1px 0 10px"}
-            fontSize={"2xl"}
-            fontWeight={"bold"}
-          >
-            {detail?.category}
-          </Text>
+          <HStack gap={10}>
+            <HStack justifyContent={"center"} alignItems={"center"} spacing={1}>
+              <Box fontSize={"2xl"}>
+                <GoThreeBars />
+              </Box>
+              <Text
+                textShadow={"#000 1px 0 10px"}
+                fontSize={"2xl"}
+                fontWeight={"bold"}
+              >
+                {detail?.category}
+              </Text>
+            </HStack>
+            <HStack justifyContent={"center"} alignItems={"center"} spacing={1}>
+              <Box fontSize={"2xl"}>
+                <BiTimeFive />
+              </Box>
+              <Text
+                textShadow={"#000 1px 0 10px"}
+                fontSize={"2xl"}
+                fontWeight={"bold"}
+              >
+                {date}
+              </Text>
+            </HStack>
+          </HStack>
+
           {isLogin ? (
             <HStack position={"absolute"} bottom={10} right={10}>
               <LightMode>
@@ -139,7 +165,7 @@ export default function EntryPage() {
               </LightMode>
               <LightMode>
                 <Button
-                  onClick={onDeleteClick}
+                  onClick={onOpen}
                   variant={"ghost"}
                   color={"white"}
                   colorScheme={"blackAlpha"}
@@ -151,23 +177,48 @@ export default function EntryPage() {
           ) : null}
         </VStack>
       </Center>
-      <Box py={"36"}>
-        <Image src={detail?.thumbnailUrl} rounded="3xl" />
+      <Box py={"36"} width={"50%"} height="auto">
+        <Image
+          src={detail?.thumbnailUrl}
+          rounded="3xl"
+          h="full"
+          w={"full"}
+          transform={"auto"}
+          boxShadow={"dark-lg"}
+          border={"0px solid"}
+          // _hover={{
+          //   boxShadow: "dark-lg",
+          //   translateY: -10,
+          //   border: "3px solid",
+          // }}
+          translateY={0}
+          transition={"0.3s"}
+        />
       </Box>
-
       <Box
         width={"75vw"}
         height="auto"
         bgColor={"red"}
         data-color-mode={colorMode}
       >
-        <MDEditor.Markdown
-          source={detail?.md}
-          style={{
-            backgroundColor: colorMode === "dark" ? "#1A202C" : undefined,
-          }}
-        />
+        <CustomStyle>
+          <MDEditor.Markdown
+            source={detail?.md}
+            style={{
+              backgroundColor: colorMode === "dark" ? "#1A202C" : undefined,
+            }}
+          />
+        </CustomStyle>
       </Box>
+
+      <EntryFooter category={detail?.category as string} />
+
+      <DeleteModal
+        isOpen={isOpen}
+        onClose={onClose}
+        id={docId}
+        thumbnailUrl={detail?.thumbnailUrl!}
+      />
     </>
   );
 }

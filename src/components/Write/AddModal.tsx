@@ -40,6 +40,7 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useEffect, useRef, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { FaImage } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { dbService, storageService } from "../../utils/firebase";
 
 interface IAddModalProps {
@@ -51,6 +52,7 @@ interface IAddModalProps {
   thumbnailUrl?: string;
   defaultCategory?: string;
   docId?: string;
+  isEdit?: boolean;
 }
 
 export interface ICategorys {
@@ -67,6 +69,8 @@ export default function AddModal({
   md,
   thumbnailUrl,
   defaultCategory,
+  docId,
+  isEdit,
 }: IAddModalProps) {
   const [thumbnail, setThumbnail] = useState<string | undefined>(thumbnailUrl);
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
@@ -77,6 +81,7 @@ export default function AddModal({
     defaultCategory
   );
   const toast = useToast();
+  const navigation = useNavigate();
 
   const getCategorys = async () => {
     const q = query(
@@ -141,8 +146,86 @@ export default function AddModal({
     }
   };
 
-  const fuck = async () => {
-    console.log(selectedCategory);
+  const onAddButtonClick = async () => {
+    if (selectedCategory === undefined || selectedCategory === "") {
+      toast({
+        title: "카테고리를 설정해주세요!",
+        position: "top",
+        isClosable: true,
+        status: "error",
+      });
+      return;
+    }
+    const thumbnailRef = ref(storageService, `notes/${uuidv4()}`);
+    let getThumbnailUrl = "";
+    if (thumbnail) {
+      const response = await uploadString(
+        thumbnailRef,
+        thumbnail as string,
+        "data_url"
+      );
+      getThumbnailUrl = await getDownloadURL(response.ref);
+    }
+    await addDoc(collection(dbService, "notes"), {
+      md: md,
+      title: title,
+      category: selectedCategory,
+      createdAt: Date.now(),
+      thumbnailUrl: getThumbnailUrl,
+    });
+    setThumbnail(undefined);
+    setSelectedCategory(undefined);
+    onClose();
+    toast({
+      title: "노트작성 완료!",
+      position: "top",
+      isClosable: true,
+    });
+    navigation(-1);
+  };
+
+  const onUpdateButtonClick = async () => {
+    const notesRef = doc(dbService, "notes", docId!);
+    const thumbnailRef = ref(storageService, `notes/${uuidv4()}`);
+    let getThumbnailUrl = "";
+    if (thumbnail) {
+      if (thumbnail.includes("https:")) {
+        await updateDoc(notesRef, {
+          md: md,
+          title: title,
+          category: selectedCategory,
+          createdAt: Date.now(),
+        });
+        onClose();
+        toast({
+          title: "노트 업데이트 완료!",
+          position: "top",
+          isClosable: true,
+        });
+        navigation(-1);
+        return;
+      }
+      const response = await uploadString(
+        thumbnailRef,
+        thumbnail as string,
+        "data_url"
+      );
+      getThumbnailUrl = await getDownloadURL(response.ref);
+    }
+    await updateDoc(notesRef, {
+      md: md,
+      title: title,
+      category: selectedCategory,
+      createdAt: Date.now(),
+      thumbnailUrl: getThumbnailUrl,
+    });
+    toast({
+      title: "노트 업데이트 완료!",
+      position: "top",
+      isClosable: true,
+    });
+    navigation(-1);
+    onClose();
   };
 
   return (
@@ -289,9 +372,15 @@ export default function AddModal({
             >
               취소
             </Button>
-            <Button colorScheme="twitter" onClick={fuck}>
-              업데이트
-            </Button>
+            {isEdit ? (
+              <Button colorScheme="twitter" onClick={onUpdateButtonClick}>
+                업데이트
+              </Button>
+            ) : (
+              <Button colorScheme="twitter" onClick={onAddButtonClick}>
+                노트작성
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>

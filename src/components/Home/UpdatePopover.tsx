@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   HStack,
   Popover,
@@ -10,37 +11,35 @@ import {
   Portal,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { deleteDoc, doc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
 import { BsThreeDots } from "react-icons/bs";
-import { dbService, storageService } from "../../utils/firebase";
+import { Link } from "react-router-dom";
+import DeleteModal from "../DeleteModal";
 
 interface IUpdatePopoverProps {
   id: string;
   thumbnailUrl: string;
+  title: string;
+  md: string;
+  category: string;
 }
 
 export default function UpdatePopover({
   thumbnailUrl,
   id,
+  title,
+  md,
+  category,
 }: IUpdatePopoverProps) {
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
-
-  const onDeleteClick = async () => {
-    const ok = window.confirm("진짜 지울거야?");
-    if (ok) {
-      await deleteDoc(doc(dbService, "notes", id));
-      await deleteObject(ref(storageService, thumbnailUrl));
-    }
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Popover placement="bottom-start">
         <PopoverTrigger>
           <Text
-            onClick={() => console.log("hi")}
             cursor={"pointer"}
             transition={"0.3s"}
             _hover={{
@@ -56,19 +55,35 @@ export default function UpdatePopover({
             <PopoverCloseButton />
             <PopoverBody>
               <HStack width={"full"} gap={3}>
+                <Box width={"50%"}>
+                  <Link
+                    to={{
+                      pathname: `/write/${id}`,
+                    }}
+                    state={{
+                      title: title,
+                      md: md,
+                      thumbnailUrl: thumbnailUrl,
+                      category: category,
+                      docId: id,
+                    }}
+                  >
+                    <Button
+                      width={"100%"}
+                      variant={"ghost"}
+                      colorScheme={"twitter"}
+                      fontSize={"xl"}
+                    >
+                      수정
+                    </Button>
+                  </Link>
+                </Box>
+
                 <Button
                   width={"50%"}
-                  variant={"ghost"}
                   colorScheme={"twitter"}
                   fontSize={"xl"}
-                >
-                  수정
-                </Button>
-                <Button
-                  width={"50%"}
-                  colorScheme={"twitter"}
-                  fontSize={"xl"}
-                  onClick={onDeleteClick}
+                  onClick={onOpen}
                 >
                   삭제
                 </Button>
@@ -77,6 +92,12 @@ export default function UpdatePopover({
           </PopoverContent>
         </Portal>
       </Popover>
+      <DeleteModal
+        isOpen={isOpen}
+        onClose={onClose}
+        id={id}
+        thumbnailUrl={thumbnailUrl}
+      />
     </>
   );
 }

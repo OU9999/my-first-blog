@@ -19,3 +19,8 @@ export const isNotesAtom = atom<boolean>({
   key: "isNotes",
   default: false,
 });
+
+export const isRefreshAtom = atom<boolean>({
+  key: "isRefresh",
+  default: false,
+});
