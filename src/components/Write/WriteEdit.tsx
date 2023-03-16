@@ -34,14 +34,6 @@ export default function WriteEdit() {
   const toast = useToast();
   const isLogin = useRecoilValue(isLoginAtom);
 
-  // const onDeleteClick = async () => {
-  //   const ok = window.confirm("진짜 지울거야?");
-  //   if (ok) {
-  //     await deleteDoc(doc(dbService, "notes", docId));
-  //     await deleteObject(ref(storageService, detail?.thumbnailUrl));
-  //   }
-  // };
-
   useEffect(() => {}, []);
 
   const vhToPixels = (vh: number) => {

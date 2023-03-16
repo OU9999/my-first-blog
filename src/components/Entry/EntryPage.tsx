@@ -14,7 +14,7 @@ import {
 import MDEditor from "@uiw/react-md-editor";
 import { doc, getDoc } from "firebase/firestore";
 import { motion } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BiTimeFive } from "react-icons/bi";
 import { GoThreeBars } from "react-icons/go";
 import { useLocation, Link } from "react-router-dom";
@@ -75,27 +75,23 @@ export interface IDetail {
 export default function EntryPage() {
   const colorMode = useColorModeValue("light", "dark");
   const loc = useLocation();
-  const docId = loc.pathname.slice(-20);
+  const [docId, setDocId] = useState(loc.pathname.slice(-20));
   const [detail, setDetail] = useState<IDetail>();
   const isLogin = useRecoilValue(isLoginAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const date = dateFormatter(detail?.createdAt!);
 
-  const getDetail = async () => {
-    const ref = doc(dbService, "notes", docId);
+  const getDetail = async (id: string) => {
+    const ref = doc(dbService, "notes", id);
     const snap = await getDoc(ref);
     const arr = snap.data();
     setDetail(arr as IDetail);
-    console.log("retry");
   };
 
-  const refreshDetail = useCallback(() => {
-    getDetail();
-  }, []);
-
   useEffect(() => {
-    refreshDetail();
-  }, []);
+    setDocId(loc.pathname.slice(-20));
+    getDetail(docId);
+  }, [docId, loc.pathname]);
 
   return (
     <>
@@ -109,7 +105,7 @@ export default function EntryPage() {
         position={"relative"}
       >
         <VStack gap={5}>
-          <Heading textShadow={"#000 1px 0 10px"} fontSize={"5xl"}>
+          <Heading textShadow={"#000 1px 0 10px"} fontSize={"5xl"} px={20}>
             {detail?.title}
           </Heading>
           <HStack gap={10}>
@@ -178,22 +174,24 @@ export default function EntryPage() {
         </VStack>
       </Center>
       <Box py={"36"} width={"50%"} height="auto">
-        <Image
-          src={detail?.thumbnailUrl}
-          rounded="3xl"
-          h="full"
-          w={"full"}
-          transform={"auto"}
-          boxShadow={"dark-lg"}
-          border={"0px solid"}
-          // _hover={{
-          //   boxShadow: "dark-lg",
-          //   translateY: -10,
-          //   border: "3px solid",
-          // }}
-          translateY={0}
-          transition={"0.3s"}
-        />
+        {detail?.thumbnailUrl !== "" ? (
+          <Image
+            src={detail?.thumbnailUrl}
+            rounded="3xl"
+            h="full"
+            w={"full"}
+            transform={"auto"}
+            boxShadow={"dark-lg"}
+            border={"0px solid"}
+            // _hover={{
+            //   boxShadow: "dark-lg",
+            //   translateY: -10,
+            //   border: "3px solid",
+            // }}
+            translateY={0}
+            transition={"0.3s"}
+          />
+        ) : null}
       </Box>
       <Box
         width={"75vw"}
@@ -211,7 +209,7 @@ export default function EntryPage() {
         </CustomStyle>
       </Box>
 
-      <EntryFooter category={detail?.category as string} />
+      <EntryFooter category={detail?.category as string} docId={docId} />
 
       <DeleteModal
         isOpen={isOpen}

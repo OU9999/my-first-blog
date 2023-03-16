@@ -7,10 +7,13 @@ import {
   Grid,
   Heading,
   HStack,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Text,
   Textarea,
+  Tooltip,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
@@ -24,12 +27,33 @@ import {
 } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FaRegComment, FaRegComments } from "react-icons/fa";
+import {
+  FaCommentSlash,
+  FaEdit,
+  FaLock,
+  FaRegComments,
+  FaReply,
+  FaUser,
+  FaUserAstronaut,
+  FaUserGraduate,
+  FaUserInjured,
+  FaUserMd,
+  FaUserNinja,
+  FaUserSecret,
+  FaUserTie,
+} from "react-icons/fa";
+import { FiCornerDownRight } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+
 import styled from "styled-components";
 import { images } from "../../constants/mainPageArray";
 import { INotes } from "../../routes/Notes";
+import { selectedCategoryAtom } from "../../utils/atoms";
 import { dbService } from "../../utils/firebase";
 import NoteCard from "../Notes/NoteCard";
+import CommentInput from "./EntryFooter/CommentInput";
+import Comments from "./EntryFooter/Comments";
 
 const BackGroundComment = styled(motion.div)<{ bg: string | undefined }>`
   width: 100vw;
@@ -63,27 +87,37 @@ const BackGroundCoverComment = styled.div`
 
 interface IEntryFooterProps {
   category: string;
+  docId: string;
 }
 
-export default function EntryFooter({ category }: IEntryFooterProps) {
-  const bgColor = useColorModeValue("white", "#1A202C");
+export default function EntryFooter({ category, docId }: IEntryFooterProps) {
+  const navigation = useNavigate();
   const [backgroundImage, setBackgroundImage] = useState<string>("");
   const [notes, setNotes] = useState<INotes[] | undefined>(undefined);
+  const [selectedCategory, setSelectedCategory] =
+    useRecoilState<string>(selectedCategoryAtom);
 
-  const getNotes = async () => {
-    const q = query(
-      collection(dbService, "notes"),
-      where("category", "==", category as string),
-      orderBy("createdAt", "desc"),
-      limit(3)
-    );
-    onSnapshot(q, (snapshot) => {
-      const notesArr: any = snapshot.docs.map((note) => ({
-        id: note.id + "",
-        ...note.data(),
-      }));
-      setNotes(notesArr);
-    });
+  const getNotes = async (category: string) => {
+    try {
+      const q = query(
+        collection(dbService, "notes"),
+        where("category", "==", category as string),
+        orderBy("createdAt", "desc"),
+        limit(3)
+      );
+      onSnapshot(q, (snapshot) => {
+        const notesArr: any = snapshot.docs.map((note) => ({
+          id: note.id + "",
+          ...note.data(),
+        }));
+        setNotes(notesArr);
+      });
+    } catch (error: any) {}
+  };
+
+  const onOtherNotesClicked = () => {
+    setSelectedCategory(category);
+    navigation(`/notes/${encodeURIComponent(selectedCategory).toLowerCase()}`);
   };
 
   useEffect(() => {
@@ -93,8 +127,11 @@ export default function EntryFooter({ category }: IEntryFooterProps) {
   }, []);
 
   useEffect(() => {
-    getNotes();
+    getNotes(category);
   }, [category]);
+
+  // const agent_str = navigator.userAgent;
+  // console.log(agent_str);
 
   return (
     <>
@@ -107,18 +144,25 @@ export default function EntryFooter({ category }: IEntryFooterProps) {
         width={"full"}
         height={"auto"}
         zIndex={2}
-        paddingLeft={20}
+        paddingX={20}
         paddingTop={20}
       >
-        <Heading
-          fontSize="6xl"
-          fontWeight="extrabold"
-          textShadow={"black 1px 0 10px"}
-          color={"white"}
-        >
-          카테고리의 다른글
-        </Heading>
+        <Flex justifyContent={"space-between"} alignItems={"center"}>
+          <Heading
+            fontSize="6xl"
+            fontWeight="extrabold"
+            textShadow={"black 1px 0 10px"}
+            color={"white"}
+          >
+            카테고리의 다른글
+          </Heading>
+          <Button colorScheme={"twitter"} onClick={onOtherNotesClicked}>
+            다른글 더 보기
+          </Button>
+        </Flex>
       </Box>
+
+      {/* NoteCards */}
       <Grid
         templateColumns={"repeat(3, 1fr)"}
         px={10}
@@ -139,58 +183,11 @@ export default function EntryFooter({ category }: IEntryFooterProps) {
           />
         ))}
       </Grid>
+
+      {/* comments */}
       <Box w={"full"} height={"auto"} zIndex={2} pt={"32"}>
-        <Box bgColor={bgColor} w={"full"} py={"24"}>
-          <Center w={"full"}>
-            <VStack w={"full"}>
-              <Box fontSize={"9xl"} my={"10"}>
-                <FaRegComments />
-              </Box>
-              <VStack
-                alignItems={"flex-start"}
-                w={"55%"}
-                h={"50vh"}
-                rounded={"2xl"}
-                border={"1px solid"}
-                boxShadow={"dark-lg"}
-                boxSizing="border-box"
-                position={"relative"}
-                p={5}
-                gap={3}
-              >
-                <HStack width={"80%"} p={5} gap={3}>
-                  <Avatar />
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<FaRegComment color="gray.300" />}
-                    />
-                    <Input type="text" placeholder="닉네임" variant="filled" />
-                  </InputGroup>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<FaRegComment color="gray.300" />}
-                    />
-                    <Input
-                      type="password"
-                      placeholder="비밀번호"
-                      variant="filled"
-                    />
-                  </InputGroup>
-                </HStack>
-                <Textarea
-                  alignItems={"flex-start"}
-                  placeholder="Here is a sample placeholder"
-                  height={"30vh"}
-                />
-                <Flex width={"full"} justifyContent={"flex-end"}>
-                  <Button colorScheme={"twitter"}>댓글 작성</Button>
-                </Flex>
-              </VStack>
-            </VStack>
-          </Center>
-        </Box>
+        <CommentInput docId={docId} />
+        <Comments docId={docId} />
       </Box>
     </>
   );

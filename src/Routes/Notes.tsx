@@ -13,9 +13,11 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { GoThreeBars } from "react-icons/go";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ICategorys } from "../components/Write/AddModal";
+import { selectedCategoryAtom } from "../utils/atoms";
 import { dbService } from "../utils/firebase";
 
 const BackGround = styled(motion.div)<{ bg: string }>`
@@ -67,9 +69,11 @@ export default function Notes() {
   const [tag, setTags] = useState<string>(allCategory.category);
   const [notes, setNotes] = useState<INotes[] | undefined>(undefined);
   const [categorys, setCategorys] = useState<ICategorys[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    allCategory.category
-  );
+  // const [selectedCategory, setSelectedCategory] = useState<string>(
+  //   allCategory.category
+  // );
+  const [selectedCategory, setSelectedCategory] =
+    useRecoilState<string>(selectedCategoryAtom);
 
   const onSetCategoryButtonClicked = (e: any) => {
     setTags(e.currentTarget.value);
@@ -108,9 +112,19 @@ export default function Notes() {
   useEffect(() => {
     getNotes();
     getCategorys();
-    setSelectedCategory(allCategory.category);
+    if (selectedCategory === allCategory.category) {
+      setTags(allCategory.category);
+      setSelectedCategory(allCategory.category);
+    } else {
+      setTags(selectedCategory);
+      setSelectedCategory(selectedCategory);
+    }
     navigation(`${encodeURIComponent(selectedCategory).toLowerCase()}`);
   }, []);
+
+  // useEffect(() => {
+  //   setSelectedCategory(locState.category);
+  // }, [locState.category]);
 
   return (
     <VStack minH={"150vh"} justifyContent={"flex-start"} position={"relative"}>

@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { allCategory } from "../routes/Notes";
 
 export const startAnimationAtom = atom<boolean>({
   key: "modaledit",
@@ -20,7 +21,7 @@ export const isNotesAtom = atom<boolean>({
   default: false,
 });
 
-export const isRefreshAtom = atom<boolean>({
-  key: "isRefresh",
-  default: false,
+export const selectedCategoryAtom = atom<string>({
+  key: "selectedCategory",
+  default: "ALL",
 });

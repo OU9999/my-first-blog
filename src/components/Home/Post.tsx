@@ -12,7 +12,7 @@ import { FaEye, FaRegCommentDots } from "react-icons/fa";
 import { GoThreeBars } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoginAtom } from "../../utils/atoms";
 import LoginModal from "../Header/LoginModal";
@@ -54,12 +54,17 @@ export default function Post({
   thumbnailUrl,
   link,
 }: IPostProps) {
+  const navigation = useNavigate();
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   const colorMode = useColorModeValue("light", "dark");
   const mdBgColor = useColorModeValue(undefined, "#2D3748");
   const isLogin = useRecoilValue(isLoginAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const date = dateFormatter(createdAt);
+
+  const onThumbnailClicked = () => {
+    navigation(`/entry/${link}`);
+  };
 
   return (
     <>
@@ -68,7 +73,6 @@ export default function Post({
         rounded="2xl"
         width={"70vw"}
         height={"35vh"}
-        border={"1px"}
         overflow={"hidden"}
         boxShadow={"dark-lg"}
         bgColor={mdBgColor}
@@ -143,7 +147,13 @@ export default function Post({
               </NoStyle>
             </Box>
           </VStack>
-          <VStack width={"40%"} height={"100%"} overflow={"hidden"}>
+          <VStack
+            width={"40%"}
+            height={"100%"}
+            overflow={"hidden"}
+            cursor={"pointer"}
+            onClick={onThumbnailClicked}
+          >
             {thumbnailUrl === "" ? (
               <Image
                 src={selectBasicThumbnail(category)}

@@ -32,7 +32,6 @@ export default function CategorySelected() {
 
   useEffect(() => {
     setIsNotes(true);
-
     return () => {
       setIsNotes(false);
     };

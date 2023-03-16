@@ -13,8 +13,8 @@ import { FaMoon, FaSun, FaUserCircle } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { motion, useAnimation, useScroll, Variants } from "framer-motion";
 
-import { useRecoilValue } from "recoil";
-import { isLoginAtom, isNotesAtom } from "../utils/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isLoginAtom, isNotesAtom, selectedCategoryAtom } from "../utils/atoms";
 import LoginModal from "./Header/LoginModal";
 import LoginPopover from "./Header/LoginPopover";
 
@@ -41,6 +41,7 @@ export default function Header() {
   const notesMatch = useMatch("/notes/:category");
   const isLogin = useRecoilValue(isLoginAtom);
   const isNotes = useRecoilValue(isNotesAtom);
+  const setSelectedCategory = useSetRecoilState(selectedCategoryAtom);
 
   const onHomeClick = () => {
     navigation("/");
@@ -50,6 +51,7 @@ export default function Header() {
       window.scrollTo(0, 0);
     } else {
       navigation("/notes");
+      setSelectedCategory("ALL");
     }
   };
   const onWriteClick = () => {
