@@ -1,22 +1,70 @@
 import {
   Avatar,
+  Button,
   Center,
   Heading,
   HStack,
   IconButton,
   Text,
+  Textarea,
   Tooltip,
   useColorModeValue,
+  useDisclosure,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
+import { doc, updateDoc } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { FaCommentSlash, FaEdit } from "react-icons/fa";
+import { FaCommentSlash } from "react-icons/fa";
 import { FiCornerDownRight } from "react-icons/fi";
+import { dbService } from "../../../utils/firebase";
+import { dateFormatter } from "../../../utils/utilsFn";
+import CommentDeleteModal from "./CommentDeleteModal";
+import CommentPopover from "./CommentPopover";
 
-export default function CommentReply() {
+interface ICommentReplyProps {
+  nickname: string;
+  password: string;
+  avatar: string;
+  comment: string;
+  createdAt: number;
+  id: string;
+  edited: boolean;
+}
+
+export default function CommentReply({
+  nickname,
+  password,
+  avatar,
+  comment,
+  createdAt,
+  id,
+  edited,
+}: ICommentReplyProps) {
   const [option, setOption] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [newComment, setNewComment] = useState(comment);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const bgColor = useColorModeValue("#fff", "#2D3748");
+  const date = dateFormatter(createdAt);
+  const toast = useToast();
+
+  const onUpdateButtonClick = async () => {
+    const commentsRef = doc(dbService, "replyComments", id!);
+    await updateDoc(commentsRef, {
+      comment: newComment,
+      edited: true,
+    });
+    toast({
+      title: "수정 완료!",
+      position: "top",
+      isClosable: true,
+    });
+    setIsEdit(false);
+  };
+
   return (
     <>
       <Center w="55%" h="auto">
@@ -43,34 +91,64 @@ export default function CommentReply() {
             <HStack alignItems={"center"} gap={4}>
               <Avatar />
               <VStack alignItems={"flex-start"}>
-                <Heading fontSize={"2xl"}>reply</Heading>
+                <Heading fontSize={"2xl"}>{nickname}</Heading>
                 <HStack>
-                  <Text fontSize={"xs"}>2023년 3월 16일 오후 1:02</Text>
+                  <Text fontSize={"xs"}>
+                    {date}
+                    {edited ? "(수정됨)" : null}
+                  </Text>
                 </HStack>
               </VStack>
             </HStack>
             <HStack gap={2} opacity={option ? 1 : 0} transition={"0.5s"}>
-              <Tooltip label="수정" aria-label="edit" placement="top">
-                <IconButton
-                  fontSize={"xl"}
-                  aria-label="edit"
-                  children={<FaEdit />}
-                  variant="ghost"
-                />
-              </Tooltip>
+              <CommentPopover password={password} setIsEdit={setIsEdit} />
               <Tooltip label="삭제" aria-label="delete" placement="top">
                 <IconButton
                   fontSize={"xl"}
                   aria-label="delete"
                   children={<FaCommentSlash />}
                   variant="ghost"
+                  onClick={onOpen}
                 />
               </Tooltip>
             </HStack>
           </HStack>
-          <Text>reply</Text>
+          {isEdit ? (
+            <VStack w={"full"} gap={3}>
+              <Textarea
+                height={"40"}
+                variant={"filled"}
+                value={newComment}
+                onChange={(e) => setNewComment(e.currentTarget.value)}
+              />
+              <HStack w={"full"} justifyContent={"flex-end"}>
+                <Button
+                  onClick={() => setIsEdit(false)}
+                  colorScheme="twitter"
+                  variant={"ghost"}
+                >
+                  취소
+                </Button>
+                <Button
+                  onClick={() => onUpdateButtonClick()}
+                  colorScheme="twitter"
+                >
+                  수정
+                </Button>
+              </HStack>
+            </VStack>
+          ) : (
+            <Text>{comment}</Text>
+          )}
         </VStack>
       </Center>
+      <CommentDeleteModal
+        isOpen={isOpen}
+        onClose={onClose}
+        commentId={id}
+        password={password}
+        isReply={true}
+      />
     </>
   );
 }

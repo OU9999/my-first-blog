@@ -20,15 +20,6 @@ export const dateFormatter = (time: number | Date) => {
   return formattedDateKR;
 };
 
-interface IThumbnail {
-  category:
-    | "React"
-    | "JavaScript"
-    | "TypeScript"
-    | "Algorithms"
-    | "HTML5 / CSS3";
-}
-
 export const selectBasicThumbnail = (category: string) => {
   switch (category) {
     case "React":
@@ -45,4 +36,8 @@ export const selectBasicThumbnail = (category: string) => {
     default:
       return;
   }
+};
+
+export const vhToPixels = (vh: number) => {
+  return Math.round(window.innerHeight / (100 / vh));
 };

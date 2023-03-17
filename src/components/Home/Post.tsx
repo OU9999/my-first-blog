@@ -57,7 +57,10 @@ export default function Post({
   const navigation = useNavigate();
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   const colorMode = useColorModeValue("light", "dark");
-  const mdBgColor = useColorModeValue(undefined, "#2D3748");
+  const mdBgColor = useColorModeValue(
+    "rgba(255,255,255,1)",
+    "rgba(45,55,72,1)"
+  );
   const isLogin = useRecoilValue(isLoginAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const date = dateFormatter(createdAt);
@@ -130,21 +133,30 @@ export default function Post({
                 <Text>{date}</Text>
               </HStack>
             </HStack>
-            <Box
-              width={"auto"}
-              h={"24"}
-              noOfLines={5}
-              data-color-mode={colorMode}
-              zIndex={2}
-            >
-              <NoStyle>
-                <MDEditor.Markdown
-                  source={md}
-                  style={{
-                    backgroundColor: mdBgColor,
-                  }}
-                />
-              </NoStyle>
+            <Box position={"relative"}>
+              <Box
+                width={"auto"}
+                h={"24"}
+                noOfLines={5}
+                data-color-mode={colorMode}
+                zIndex={2}
+              >
+                <NoStyle>
+                  <MDEditor.Markdown
+                    source={md}
+                    style={{
+                      backgroundColor: mdBgColor,
+                    }}
+                  />
+                </NoStyle>
+              </Box>
+              <Box
+                position={"absolute"}
+                w="full"
+                h="full"
+                background={`linear-gradient(to top, ${mdBgColor} 0%,rgba(255,255,255,0) 100%)`}
+                top={0}
+              ></Box>
             </Box>
           </VStack>
           <VStack

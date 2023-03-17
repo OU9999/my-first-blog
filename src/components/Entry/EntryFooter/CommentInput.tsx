@@ -14,7 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { addDoc, collection } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FaLock,
   FaRegComments,
@@ -33,43 +33,43 @@ interface ICommentInputProps {
   docId: string;
 }
 
-export default function CommentInput({ docId }: ICommentInputProps) {
-  const userIcons = [
-    {
-      string: "ninja",
-      icon: <FaUserNinja fontSize={"1.7rem"} />,
-    },
-    {
-      string: "secret",
-      icon: <FaUserSecret fontSize={"1.7rem"} />,
-    },
-    {
-      string: "tie",
-      icon: <FaUserTie fontSize={"1.7rem"} />,
-    },
-    {
-      string: "normal",
-      icon: <FaUser fontSize={"1.7rem"} />,
-    },
-    {
-      string: "md",
-      icon: <FaUserMd fontSize={"1.7rem"} />,
-    },
-    {
-      string: "graduate",
-      icon: <FaUserGraduate fontSize={"1.7rem"} />,
-    },
-    {
-      string: "injured",
-      icon: <FaUserInjured fontSize={"1.7rem"} />,
-    },
-    {
-      string: "astronaut",
-      icon: <FaUserAstronaut fontSize={"1.7rem"} />,
-    },
-  ];
+export const userIcons = [
+  {
+    string: "normal",
+    icon: <FaUser fontSize={"1.7rem"} />,
+  },
+  {
+    string: "ninja",
+    icon: <FaUserNinja fontSize={"1.7rem"} />,
+  },
+  {
+    string: "secret",
+    icon: <FaUserSecret fontSize={"1.7rem"} />,
+  },
+  {
+    string: "tie",
+    icon: <FaUserTie fontSize={"1.7rem"} />,
+  },
+  {
+    string: "md",
+    icon: <FaUserMd fontSize={"1.7rem"} />,
+  },
+  {
+    string: "graduate",
+    icon: <FaUserGraduate fontSize={"1.7rem"} />,
+  },
+  {
+    string: "injured",
+    icon: <FaUserInjured fontSize={"1.7rem"} />,
+  },
+  {
+    string: "astronaut",
+    icon: <FaUserAstronaut fontSize={"1.7rem"} />,
+  },
+];
 
-  const [userIcon, setUserIcon] = useState<any>();
+export default function CommentInput({ docId }: ICommentInputProps) {
+  const [userIcon, setUserIcon] = useState<any>(userIcons[0]);
   const [nickname, setNickname] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [comment, setComment] = useState<string>("");
@@ -81,10 +81,6 @@ export default function CommentInput({ docId }: ICommentInputProps) {
   const onAvatarClicked = () => {
     setUserIcon(userIcons[Math.floor(Math.random() * userIcons.length)]);
   };
-
-  useEffect(() => {
-    setUserIcon(userIcons[Math.floor(Math.random() * userIcons.length)]);
-  }, []);
 
   const onAddButtonClicked = async () => {
     if (nickname === "" || password === "" || comment === "") {
@@ -102,6 +98,7 @@ export default function CommentInput({ docId }: ICommentInputProps) {
       password: password,
       comment: comment,
       createdAt: Date.now(),
+      edited: false,
     });
     toast({
       title: "댓글작성 완료!",
@@ -170,6 +167,7 @@ export default function CommentInput({ docId }: ICommentInputProps) {
                 alignItems={"flex-start"}
                 placeholder="댓글 작성란..."
                 height={"30vh"}
+                variant={"filled"}
                 value={comment}
                 onChange={(e) => setComment(e.currentTarget.value)}
               />

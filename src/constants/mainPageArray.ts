@@ -22,6 +22,9 @@ export const images = [
   "cinema.jpeg",
   "lalaland.jpeg",
   "mymelody.gif",
+  "wall-e.gif",
+  "up.jpeg",
+  "insideout.jpeg",
 ];
 
 export const quotes = [

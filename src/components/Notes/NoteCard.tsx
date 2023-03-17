@@ -23,11 +23,14 @@ import styled from "styled-components";
 import reset from "styled-reset";
 
 // const cardVariants: Variants = {
-//   show: (index: number) => {
+//   show: (test: number) => {
 //     return {
 //       opacity: [0, 1],
+//       y: [-100, 0],
 //       transition: {
 //         duration: 0.8,
+//         type: "spring",
+//         stiffness: 200,
 //       },
 //     };
 //   },
@@ -60,8 +63,12 @@ export default function NoteCard({
   const [magnification, setMagnification] = useState(false);
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   const colorMode = useColorModeValue("light", "dark");
-  const mdBgColor = useColorModeValue(undefined, "#2D3748");
+  const mdBgColor = useColorModeValue(
+    "rgba(255,255,255,1)",
+    "rgba(45,55,72,1)"
+  );
   const date = dateFormatter(createdAt);
+
   return (
     <>
       <Box
@@ -74,9 +81,10 @@ export default function NoteCard({
           minH={"sm"}
           as={motion.div}
           // variants={cardVariants}
-          // initial="normal"
+          // initial="wait"
           // animate="show"
           // exit="exit"
+          // custom={test}
           boxShadow={"2xl"}
           onHoverStart={() => setMagnification(true)}
           onHoverEnd={() => setMagnification(false)}
@@ -139,25 +147,32 @@ export default function NoteCard({
                   {title}
                 </Heading>
               </Link>
-              <Box
-                width={"auto"}
-                minH="24"
-                maxH="24"
-                overflow={"hidden"}
-                data-color-mode={colorMode}
-              >
-                <NoStyle>
-                  <MDEditor.Markdown
-                    source={md}
-                    style={{
-                      backgroundColor: mdBgColor,
-                    }}
-                  />
-                </NoStyle>
+              <Box position={"relative"}>
+                <Box
+                  width={"auto"}
+                  minH="24"
+                  maxH="24"
+                  overflow={"hidden"}
+                  data-color-mode={colorMode}
+                >
+                  <NoStyle>
+                    <MDEditor.Markdown
+                      source={md}
+                      style={{
+                        backgroundColor: mdBgColor,
+                      }}
+                    />
+                  </NoStyle>
+                </Box>
+                <Box
+                  position={"absolute"}
+                  w="full"
+                  h="full"
+                  background={`linear-gradient(to top, ${mdBgColor} 0%,rgba(255,255,255,0) 100%)`}
+                  top={0}
+                ></Box>
               </Box>
-              {/* <Text noOfLines={4} minH={"24"}>
-                {md}
-              </Text> */}
+
               <Button
                 colorScheme={"twitter"}
                 fontSize="lg"

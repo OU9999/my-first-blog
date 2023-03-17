@@ -11,6 +11,7 @@ import {
   PopoverTrigger,
   Portal,
   Text,
+  useDisclosure,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -20,6 +21,7 @@ import { Link } from "react-router-dom";
 import { authService } from "../../utils/firebase";
 
 export default function LoginPopover() {
+  const { onClose, isOpen, onToggle } = useDisclosure();
   const toast = useToast();
   const onLogOutClick = () => {
     authService.signOut();
@@ -32,13 +34,20 @@ export default function LoginPopover() {
 
   return (
     <>
-      <Popover placement="bottom-start">
+      <Popover
+        placement="bottom-start"
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnBlur={false}
+        returnFocusOnClose={false}
+      >
         <PopoverTrigger>
           <Avatar
             size="md"
             name="Ryan Florence"
             src={`/assets/imgs/profile.jpeg`}
             cursor="pointer"
+            onClick={onToggle}
           />
         </PopoverTrigger>
         <Portal>

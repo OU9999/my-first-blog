@@ -10,6 +10,7 @@ import {
 import { motion, useAnimation, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import {
+  FaArrowDown,
   FaGithub,
   FaInstagram,
   FaQuoteLeft,
@@ -22,6 +23,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { images, quotes } from "../../constants/mainPageArray";
 import { startAnimationAtom } from "../../utils/atoms";
+import { vhToPixels } from "../../utils/utilsFn";
 
 const BackGround = styled(motion.div)<{ bg: string }>`
   width: 100vw;
@@ -177,6 +179,10 @@ export default function MainPage() {
     navigator.clipboard.writeText("omh232323@gmail.com");
   };
 
+  const onScrollDownClicked = () => {
+    window.scrollTo({ top: vhToPixels(100), behavior: "smooth" });
+  };
+
   useEffect(() => {
     setBgAndQuote();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,7 +204,7 @@ export default function MainPage() {
         initial={"normal"}
       />
       <BackGroundCover />
-      <Center w={"100vw"} h={"100vh"}>
+      <Center w={"100vw"} h={"100vh"} position={"relative"}>
         <Flex
           justify={"center"}
           align={"center"}
@@ -422,6 +428,30 @@ export default function MainPage() {
             </Box>
           </Flex>
         </Flex>
+        <Box
+          position={"absolute"}
+          bottom={100}
+          fontSize={"5xl"}
+          textShadow={"#000 1px 0 10px"}
+          as={motion.div}
+          animate={{
+            y: [0, 100],
+            transition: {
+              repeat: Infinity,
+              repeatType: "reverse",
+            },
+          }}
+          color="white"
+          zIndex={99}
+          cursor="pointer"
+          transition={"0.5s"}
+          _hover={{
+            color: "#1A94DA",
+          }}
+          onClick={onScrollDownClicked}
+        >
+          <FaArrowDown />
+        </Box>
       </Center>
     </>
   );

@@ -13,7 +13,7 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { GoThreeBars } from "react-icons/go";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { ICategorys } from "../components/Write/AddModal";
@@ -69,9 +69,6 @@ export default function Notes() {
   const [tag, setTags] = useState<string>(allCategory.category);
   const [notes, setNotes] = useState<INotes[] | undefined>(undefined);
   const [categorys, setCategorys] = useState<ICategorys[]>([]);
-  // const [selectedCategory, setSelectedCategory] = useState<string>(
-  //   allCategory.category
-  // );
   const [selectedCategory, setSelectedCategory] =
     useRecoilState<string>(selectedCategoryAtom);
 
@@ -122,12 +119,8 @@ export default function Notes() {
     navigation(`${encodeURIComponent(selectedCategory).toLowerCase()}`);
   }, []);
 
-  // useEffect(() => {
-  //   setSelectedCategory(locState.category);
-  // }, [locState.category]);
-
   return (
-    <VStack minH={"150vh"} justifyContent={"flex-start"} position={"relative"}>
+    <VStack h="auto" justifyContent={"flex-start"} position={"relative"}>
       <BackGround bg="/assets/imgs/weather.jpeg" />
       <BackGroundCover />
       <Center minH={"40vh"} color="white" zIndex={2}>
@@ -164,61 +157,11 @@ export default function Notes() {
                   </MenuItem>
                 </>
               ))}
-              {/* <MenuItem
-                icon={<BsEye />}
-                value={"ALL"}
-                onClick={(e) => onTagButtonClicked(e)}
-              >
-                ALL
-              </MenuItem>
-              <MenuItem
-                icon={<FaReact />}
-                value={"React"}
-                onClick={(e) => onTagButtonClicked(e)}
-              >
-                React
-              </MenuItem>
-              <MenuItem
-                icon={<SiTypescript />}
-                value={"TypeScript"}
-                onClick={(e) => onTagButtonClicked(e)}
-              >
-                TypeScript
-              </MenuItem>
-              <MenuItem
-                icon={<SiJavascript />}
-                value={"JavaScript"}
-                onClick={(e) => onTagButtonClicked(e)}
-              >
-                JavaScript
-              </MenuItem> */}
             </MenuList>
           </Menu>
         </HStack>
 
         <Outlet context={{ selectedCategory, notes, categorys }} />
-        {/* <AnimatePresence>
-          <Grid
-            templateColumns={"repeat(3, 1fr)"}
-            px={10}
-            columnGap={8}
-            rowGap={16}
-            as={motion.div}
-            variants={gridVariants}
-            animate={gridAni}
-          >
-            {notes &&
-              notes.map((note) => (
-                <NoteCard
-                  key={note.id}
-                  title={note.title}
-                  md={note.md}
-                  category={note.category}
-                  createdAt={note.createdAt}
-                />
-              ))}
-          </Grid>
-        </AnimatePresence> */}
       </VStack>
     </VStack>
   );

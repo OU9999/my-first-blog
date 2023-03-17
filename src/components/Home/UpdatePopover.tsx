@@ -34,10 +34,21 @@ export default function UpdatePopover({
 }: IUpdatePopoverProps) {
   const twitterColor = useColorModeValue("twitter.500", "twitter.200");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    onClose: onClosePopover,
+    isOpen: isOpenPopover,
+    onToggle: onTogglePopover,
+  } = useDisclosure();
 
   return (
     <>
-      <Popover placement="bottom-start">
+      <Popover
+        placement="bottom-start"
+        returnFocusOnClose={false}
+        closeOnBlur={false}
+        isOpen={isOpenPopover}
+        onClose={onClosePopover}
+      >
         <PopoverTrigger>
           <Text
             cursor={"pointer"}
@@ -45,6 +56,7 @@ export default function UpdatePopover({
             _hover={{
               color: twitterColor,
             }}
+            onClick={onTogglePopover}
           >
             <BsThreeDots />
           </Text>

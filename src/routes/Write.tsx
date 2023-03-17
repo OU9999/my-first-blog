@@ -16,6 +16,7 @@ import { useMatch, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import AddModal from "../components/Write/AddModal";
 import { isLoginAtom, writeAtom } from "../utils/atoms";
+import { vhToPixels } from "../utils/utilsFn";
 
 export default function Write() {
   const isWriteMatch = useMatch("/write");
@@ -30,10 +31,6 @@ export default function Write() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const isLogin = useRecoilValue(isLoginAtom);
-
-  const vhToPixels = (vh: number) => {
-    return Math.round(window.innerHeight / (100 / vh));
-  };
 
   const onOutClicked = () => {
     navigation(-1);

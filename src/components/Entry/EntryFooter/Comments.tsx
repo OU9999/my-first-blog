@@ -21,15 +21,8 @@ interface IComment {
   avatar: string;
   comment: string;
   createdAt: number;
-}
-
-interface ICommentReply {
-  commentId: string;
-  nickname: string;
-  password: string;
-  avatar: string;
-  comment: string;
-  createdAt: number;
+  edited: boolean;
+  id: string;
 }
 
 export default function Comments({ docId }: ICommentsProps) {
@@ -43,9 +36,9 @@ export default function Comments({ docId }: ICommentsProps) {
         orderBy("createdAt", "desc")
       );
       onSnapshot(q, (snapshot) => {
-        const commentsArr: any = snapshot.docs.map((note) => ({
-          id: note.id + "",
-          ...note.data(),
+        const commentsArr: any = snapshot.docs.map((comment) => ({
+          id: comment.id + "",
+          ...comment.data(),
         }));
         setComments(commentsArr);
       });
@@ -56,13 +49,21 @@ export default function Comments({ docId }: ICommentsProps) {
     getComments(docId);
   }, [docId]);
 
-  console.log(comments);
-
   return (
     <>
       <Center w="full" h={"auto"} flexDir={"column"} gap={30}>
-        <Comment />
-        <Comment />
+        {comments?.map((comment) => (
+          <Comment
+            key={comment.id}
+            commentId={comment.id}
+            nickname={comment.nickname}
+            password={comment.password}
+            avatar={comment.avatar}
+            comment={comment.comment}
+            createdAt={comment.createdAt}
+            edited={comment.edited}
+          />
+        ))}
       </Center>
     </>
   );

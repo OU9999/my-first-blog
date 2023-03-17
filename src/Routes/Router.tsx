@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import EntryPage from "../components/Entry/EntryPage";
 import CategorySelected from "../components/Notes/CategorySelected";
 import WriteEdit from "../components/Write/WriteEdit";
 import Root from "../Root";
 import Entry from "./Entry";
+import GuestBook from "./GuestBook";
 import Home from "./Home";
 import Notes from "./Notes";
 import NotFound from "./NotFound";
@@ -40,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "entry/:pageid",
         element: <Entry />,
+      },
+      {
+        path: "guestbook",
+        element: <GuestBook />,
       },
     ],
   },

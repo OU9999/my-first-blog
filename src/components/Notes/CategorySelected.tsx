@@ -75,15 +75,17 @@ export default function CategorySelected() {
             : notes &&
               notes.map((note) =>
                 note.category === selectedCategory ? (
-                  <NoteCard
-                    key={note.id}
-                    link={note.id}
-                    title={note.title}
-                    md={note.md}
-                    category={note.category}
-                    createdAt={note.createdAt}
-                    thumbnailUrl={note.thumbnailUrl}
-                  />
+                  <>
+                    <NoteCard
+                      key={note.id}
+                      link={note.id}
+                      title={note.title}
+                      md={note.md}
+                      category={note.category}
+                      createdAt={note.createdAt}
+                      thumbnailUrl={note.thumbnailUrl}
+                    />
+                  </>
                 ) : null
               )}
         </Grid>

@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isLoginAtom, writeAtom } from "../../utils/atoms";
+import { vhToPixels } from "../../utils/utilsFn";
 import AddModal from "./AddModal";
 
 export default function WriteEdit() {
@@ -35,10 +36,6 @@ export default function WriteEdit() {
   const isLogin = useRecoilValue(isLoginAtom);
 
   useEffect(() => {}, []);
-
-  const vhToPixels = (vh: number) => {
-    return Math.round(window.innerHeight / (100 / vh));
-  };
 
   const onOutClicked = () => {
     navigation(-1);
