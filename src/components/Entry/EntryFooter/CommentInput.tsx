@@ -87,6 +87,7 @@ export default function CommentInput({ docId }: ICommentInputProps) {
       toast({
         title: "빈칸이 있습니다.",
         position: "top",
+        status: "error",
         isClosable: true,
       });
       return;

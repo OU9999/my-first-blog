@@ -1,9 +1,9 @@
 import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { FaArrowDown } from "react-icons/fa";
 import styled from "styled-components";
-import { vhToPixels } from "../utils/utilsFn";
+import Comments from "../components/Entry/EntryFooter/Comments";
+import GBComments from "../components/GuestBook/GBComments";
+import GBInput from "../components/GuestBook/GBInput";
 
 const BackGround = styled(motion.div)<{ bg: string }>`
   width: 100vw;
@@ -36,18 +36,14 @@ const BackGroundCover = styled.div`
 `;
 
 export default function GuestBook() {
-  const onScrollDownClicked = () => {
-    window.scrollTo({ top: vhToPixels(80), behavior: "smooth" });
-  };
-
   return (
     <>
       <VStack h="auto" justifyContent={"flex-start"} position={"relative"}>
         <BackGround bg="/assets/imgs/weather.jpeg" />
         <BackGroundCover />
         <Center minH={"60vh"} color="white" zIndex={2}>
-          <VStack>
-            <Heading textShadow={"#000 1px 0 10px"} fontSize={"5xl"}>
+          <VStack gap={4}>
+            <Heading textShadow={"#000 1px 0 10px"} fontSize={"7xl"}>
               Guest Book
             </Heading>
             <Text
@@ -59,6 +55,11 @@ export default function GuestBook() {
             </Text>
           </VStack>
         </Center>
+        {/* comments */}
+        <Box w={"full"} height={"auto"} zIndex={2} pt={"32"}>
+          <GBInput />
+          <GBComments />
+        </Box>
       </VStack>
     </>
   );
