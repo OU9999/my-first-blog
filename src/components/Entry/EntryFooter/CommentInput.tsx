@@ -92,6 +92,24 @@ export default function CommentInput({ docId }: ICommentInputProps) {
       });
       return;
     }
+    if (nickname.length > 15) {
+      toast({
+        title: `닉네임이 너무 깁니다..( ${nickname.length} / 15 )`,
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
+    if (comment.length > 500) {
+      toast({
+        title: `댓글이 너무 깁니다..( ${comment.length} / 500 )`,
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
     await addDoc(collection(dbService, "comments"), {
       docId: docId,
       avatar: userIcon.string,

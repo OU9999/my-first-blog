@@ -9,45 +9,50 @@ import Notes from "./Notes";
 import NotFound from "./NotFound";
 import Write from "./Write";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Root />,
+      errorElement: <NotFound />,
+      children: [
+        {
+          path: "",
+          element: <Home />,
+        },
+        {
+          path: "notes",
+          element: <Notes />,
+          children: [
+            {
+              path: ":category",
+              element: <CategorySelected />,
+            },
+          ],
+        },
+        {
+          path: "write",
+          element: <Write />,
+        },
+        {
+          path: "write/:writeid",
+          element: <WriteEdit />,
+        },
+        {
+          path: "entry/:pageid",
+          element: <Entry />,
+        },
+        {
+          path: "guestbook",
+          element: <GuestBook />,
+        },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <Root />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        path: "",
-        element: <Home />,
-      },
-      {
-        path: "notes",
-        element: <Notes />,
-        children: [
-          {
-            path: ":category",
-            element: <CategorySelected />,
-          },
-        ],
-      },
-      {
-        path: "write",
-        element: <Write />,
-      },
-      {
-        path: "write/:writeid",
-        element: <WriteEdit />,
-      },
-      {
-        path: "entry/:pageid",
-        element: <Entry />,
-      },
-      {
-        path: "guestbook",
-        element: <GuestBook />,
-      },
-    ],
-  },
-]);
+    basename: process.env.PUBLIC_URL,
+  }
+);
 
 export default function Router() {
   return <RouterProvider router={router} />;

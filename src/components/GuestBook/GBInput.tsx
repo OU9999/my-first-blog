@@ -137,6 +137,24 @@ export default function GBInput() {
       });
       return;
     }
+    if (nickname.length > 15) {
+      toast({
+        title: `닉네임이 너무 깁니다..( ${nickname.length} / 15 )`,
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
+    if (comment.length > 500) {
+      toast({
+        title: `방명록이 너무 깁니다..( ${comment.length} / 500 )`,
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
 
     const userIconPicRef = ref(storageService, `guestBooks/icons/${uuidv4()}`);
     const guestBookImgRef = ref(storageService, `guestBooks/imgs/${uuidv4()}`);

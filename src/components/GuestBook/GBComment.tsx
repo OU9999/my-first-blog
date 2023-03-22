@@ -74,6 +74,15 @@ export default function GBComment({
   const guestBookImgInput = useRef<HTMLInputElement>(null);
 
   const onUpdateButtonClick = async () => {
+    if (newComment.length > 500) {
+      toast({
+        title: `방명록이 너무 깁니다..( ${newComment.length} / 500 )`,
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
     const commentsRef = doc(dbService, "guestBooks", commentId!);
     const guestBookImgRef = ref(storageService, `guestBooks/imgs/${uuidv4()}`);
     let getGuestBookImgUrl = "";
@@ -252,7 +261,7 @@ export default function GBComment({
           </VStack>
         ) : (
           <VStack alignItems={"flex-start"} gap={3}>
-            <Text>{comment}</Text>
+            <Text wordBreak={"break-all"}>{comment}</Text>
             {guestBookImg !== "" ? (
               <Image src={guestBookImg} h="auto" rounded={"3xl"} />
             ) : null}

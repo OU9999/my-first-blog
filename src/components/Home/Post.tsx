@@ -74,7 +74,7 @@ export default function Post({
       <PostDiv
         position={"relative"}
         rounded="2xl"
-        width={"70vw"}
+        width={"65vw"}
         height={"35vh"}
         overflow={"hidden"}
         boxShadow={"dark-lg"}

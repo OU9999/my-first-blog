@@ -1,9 +1,10 @@
 import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Comments from "../components/Entry/EntryFooter/Comments";
 import GBComments from "../components/GuestBook/GBComments";
 import GBInput from "../components/GuestBook/GBInput";
+import { images } from "../constants/mainPageArray";
 
 const BackGround = styled(motion.div)<{ bg: string }>`
   width: 100vw;
@@ -36,10 +37,20 @@ const BackGroundCover = styled.div`
 `;
 
 export default function GuestBook() {
+  const [backgroundImage, setBackgroundImage] = useState<string>("");
+
+  useEffect(() => {
+    setBackgroundImage(images[Math.floor(Math.random() * images.length)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <VStack h="auto" justifyContent={"flex-start"} position={"relative"}>
-        <BackGround bg="/assets/imgs/weather.jpeg" />
+        <BackGround
+          bg={
+            "https://firebasestorage.googleapis.com/v0/b/ou9999-first-blog.appspot.com/o/icons%2Fjerry.gif?alt=media&token=b7813d8a-f932-46ee-a480-dca70707d3c6"
+          }
+        />
         <BackGroundCover />
         <Center minH={"60vh"} color="white" zIndex={2}>
           <VStack gap={4}>

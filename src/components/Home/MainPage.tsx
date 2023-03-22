@@ -152,9 +152,8 @@ export default function MainPage() {
   };
 
   const setBgAndQuote = () => {
-    setBackgroundImage(
-      `/assets/imgs/${images[Math.floor(Math.random() * images.length)]}`
-    );
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setBackgroundImage(images[Math.floor(Math.random() * images.length)]);
     setQuote(`${quotes[Math.floor(Math.random() * quotes.length)]}`);
   };
 

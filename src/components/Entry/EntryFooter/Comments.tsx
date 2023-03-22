@@ -14,7 +14,7 @@ interface ICommentsProps {
   docId: string;
 }
 
-interface IComment {
+export interface IComment {
   docId: string;
   nickname: string;
   password: string;

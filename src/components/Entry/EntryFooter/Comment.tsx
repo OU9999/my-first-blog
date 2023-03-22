@@ -77,6 +77,15 @@ export default function Comment({
   const date = dateFormatter(createdAt);
 
   const onUpdateButtonClick = async () => {
+    if (newComment.length > 500) {
+      toast({
+        title: `댓글이 너무 깁니다..( ${newComment.length} / 500 )`,
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
     const commentsRef = doc(dbService, "comments", commentId!);
     await updateDoc(commentsRef, {
       comment: newComment,
@@ -199,7 +208,7 @@ export default function Comment({
             </HStack>
           </VStack>
         ) : (
-          <Text>{comment}</Text>
+          <Text wordBreak={"break-all"}>{comment}</Text>
         )}
       </VStack>
 

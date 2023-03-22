@@ -1,22 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  Heading,
-  HStack,
-  IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-  Textarea,
-  Tooltip,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Heading } from "@chakra-ui/react";
 import {
   collection,
   limit,
@@ -27,22 +9,6 @@ import {
 } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import {
-  FaCommentSlash,
-  FaEdit,
-  FaLock,
-  FaRegComments,
-  FaReply,
-  FaUser,
-  FaUserAstronaut,
-  FaUserGraduate,
-  FaUserInjured,
-  FaUserMd,
-  FaUserNinja,
-  FaUserSecret,
-  FaUserTie,
-} from "react-icons/fa";
-import { FiCornerDownRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
@@ -121,9 +87,7 @@ export default function EntryFooter({ category, docId }: IEntryFooterProps) {
   };
 
   useEffect(() => {
-    setBackgroundImage(
-      `/assets/imgs/${images[Math.floor(Math.random() * images.length)]}`
-    );
+    setBackgroundImage(images[Math.floor(Math.random() * images.length)]);
   }, []);
 
   useEffect(() => {

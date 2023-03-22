@@ -225,7 +225,9 @@ export default function Header() {
         )}
       </HStack>
       <Avatar
-        src={"/assets/icons/hug_me.png"}
+        src={
+          "https://firebasestorage.googleapis.com/v0/b/ou9999-first-blog.appspot.com/o/icons%2Fhug_me.png?alt=media&token=c44657ff-630e-4edb-a382-b78495387339"
+        }
         size={"xl"}
         position={"fixed"}
         zIndex={99}
