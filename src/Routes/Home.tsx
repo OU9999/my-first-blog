@@ -70,7 +70,12 @@ export default function Home() {
           <Heading py={10}>START!</Heading>
           <HStack w={"full"}>
             <Center w={"full"}>
-              <HStack width={"65vw"} gap={3} boxSizing="border-box">
+              <HStack
+                width={"65vw"}
+                gap={3}
+                boxSizing="border-box"
+                justifyContent={"center"}
+              >
                 <Box onClick={onOpen}>
                   <StartCard
                     heading="Introduce"

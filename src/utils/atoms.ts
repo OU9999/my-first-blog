@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import { allCategory } from "../routes/Notes";
 
 export const startAnimationAtom = atom<boolean>({
   key: "modaledit",
