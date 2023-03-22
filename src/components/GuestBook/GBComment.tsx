@@ -15,20 +15,12 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { uuidv4 } from "@firebase/util";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { FaCamera, FaCommentSlash, FaImage, FaReply } from "react-icons/fa";
+import { FaCommentSlash, FaImage } from "react-icons/fa";
 import { dbService, storageService } from "../../utils/firebase";
 import { dateFormatter } from "../../utils/utilsFn";
 import GBCommentDeleteModal from "./GBCommentDeleteModal";
@@ -61,7 +53,6 @@ export default function GBComment({
   const [icon, setIcon] = useState<JSX.Element>();
   const [option, setOption] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [isReply, setIsReply] = useState(false);
   const [newComment, setNewComment] = useState(comment);
   const [newGuestBookImg, setNewGuestBookImg] = useState<string | undefined>(
     guestBookImg
@@ -145,6 +136,7 @@ export default function GBComment({
   };
 
   const avatarTest = (avatar: string) => {
+    // eslint-disable-next-line array-callback-return
     userIcons.map((userIcon) => {
       if (avatar === userIcon.string) return setIcon(userIcon.icon);
     });
@@ -260,8 +252,10 @@ export default function GBComment({
             </Flex>
           </VStack>
         ) : (
-          <VStack alignItems={"flex-start"} gap={3}>
-            <Text wordBreak={"break-all"}>{comment}</Text>
+          <VStack w="full" alignItems={"flex-start"} gap={3}>
+            <Text wordBreak={"break-all"} textAlign={"center"}>
+              {comment}
+            </Text>
             {guestBookImg !== "" ? (
               <Image src={guestBookImg} h="auto" rounded={"3xl"} />
             ) : null}

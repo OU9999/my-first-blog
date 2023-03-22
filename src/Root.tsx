@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Outlet } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import Footer from "./components/Footer";
@@ -20,10 +21,14 @@ export default function Root() {
         setIsLogin(false);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
+      <Helmet>
+        <title>OU9999's Blog!</title>
+      </Helmet>
       <ScrollToTop />
       {isWrite ? null : <Header />}
       <Outlet />

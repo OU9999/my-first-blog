@@ -121,6 +121,7 @@ export default function Comment({
   }, [commentId]);
 
   const avatarTest = (avatar: string) => {
+    // eslint-disable-next-line array-callback-return
     userIcons.map((userIcon) => {
       if (avatar === userIcon.string) return setIcon(userIcon.icon);
     });

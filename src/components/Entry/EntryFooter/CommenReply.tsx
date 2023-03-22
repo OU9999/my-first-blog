@@ -15,12 +15,13 @@ import {
 } from "@chakra-ui/react";
 import { doc, updateDoc } from "firebase/firestore";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCommentSlash } from "react-icons/fa";
 import { FiCornerDownRight } from "react-icons/fi";
 import { dbService } from "../../../utils/firebase";
 import { dateFormatter } from "../../../utils/utilsFn";
 import CommentDeleteModal from "./CommentDeleteModal";
+import { userIcons } from "./CommentInput";
 import CommentPopover from "./CommentPopover";
 
 interface ICommentReplyProps {
@@ -42,6 +43,7 @@ export default function CommentReply({
   id,
   edited,
 }: ICommentReplyProps) {
+  const [icon, setIcon] = useState<JSX.Element>();
   const [option, setOption] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [newComment, setNewComment] = useState(comment);
@@ -64,6 +66,17 @@ export default function CommentReply({
     });
     setIsEdit(false);
   };
+
+  const avatarTest = (avatar: string) => {
+    // eslint-disable-next-line array-callback-return
+    userIcons.map((userIcon) => {
+      if (avatar === userIcon.string) return setIcon(userIcon.icon);
+    });
+  };
+
+  useEffect(() => {
+    avatarTest(avatar);
+  }, [avatar]);
 
   return (
     <>
@@ -89,7 +102,7 @@ export default function CommentReply({
         >
           <HStack w={"full"} justifyContent={"space-between"}>
             <HStack alignItems={"center"} gap={4}>
-              <Avatar />
+              <Avatar icon={icon} />
               <VStack alignItems={"flex-start"}>
                 <Heading fontSize={"2xl"}>{nickname}</Heading>
                 <HStack>

@@ -79,6 +79,7 @@ export default function StartModal() {
   useEffect(() => {
     onOpen();
     setTimeout(() => timeOut(), 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 import { Box, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { SiFirebase, SiReact, SiTypescript } from "react-icons/si";
 
 export default function Footer() {

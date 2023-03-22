@@ -9,17 +9,15 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Text,
   Textarea,
   useColorModeValue,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import { uuidv4 } from "@firebase/util";
-import axios from "axios";
 import { addDoc, collection } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   FaLock,
   FaRegComments,

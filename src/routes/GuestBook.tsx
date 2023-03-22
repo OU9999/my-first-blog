@@ -1,6 +1,7 @@
 import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import GBComments from "../components/GuestBook/GBComments";
 import GBInput from "../components/GuestBook/GBInput";
@@ -45,6 +46,9 @@ export default function GuestBook() {
   }, []);
   return (
     <>
+      <Helmet>
+        <title>GuestBook - OU9999's Blog!</title>
+      </Helmet>
       <VStack h="auto" justifyContent={"flex-start"} position={"relative"}>
         <BackGround
           bg={

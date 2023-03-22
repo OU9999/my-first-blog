@@ -1,9 +1,7 @@
 import {
-  Avatar,
   Box,
   Button,
   ButtonGroup,
-  HStack,
   IconButton,
   Input,
   InputGroup,
@@ -16,12 +14,9 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
-  Portal,
-  Text,
   Tooltip,
   useDisclosure,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaEdit, FaLock } from "react-icons/fa";

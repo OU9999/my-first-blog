@@ -5,6 +5,7 @@ import {
   CardBody,
   CardFooter,
   Divider,
+  Flex,
   Heading,
   HStack,
   Image,
@@ -135,17 +136,19 @@ export default function NoteCard({
                   pathname: `/entry/${link}`,
                 }}
               >
-                <Heading
-                  size="md"
-                  noOfLines={1}
-                  transition={"0.3s"}
-                  cursor="pointer"
-                  _hover={{
-                    color: twitterColor,
-                  }}
-                >
-                  {title}
-                </Heading>
+                <Flex h={"12"} alignItems={"center"}>
+                  <Heading
+                    size="md"
+                    noOfLines={2}
+                    transition={"0.3s"}
+                    cursor="pointer"
+                    _hover={{
+                      color: twitterColor,
+                    }}
+                  >
+                    {title}
+                  </Heading>
+                </Flex>
               </Link>
               <Box position={"relative"}>
                 <Box

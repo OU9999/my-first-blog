@@ -111,6 +111,7 @@ export default function AddModal({
 
   const onNewCategoryButtonClicked = async () => {
     let errorState = false;
+    // eslint-disable-next-line array-callback-return
     categorys.map((category) => {
       if (category.category === newCategory) {
         toast({

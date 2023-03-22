@@ -12,6 +12,7 @@ import {
 import MDEditor from "@uiw/react-md-editor";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isLoginAtom, writeAtom } from "../../utils/atoms";
@@ -78,6 +79,9 @@ export default function WriteEdit() {
 
   return (
     <>
+      <Helmet>
+        <title>Write - OU9999's Blog!</title>
+      </Helmet>
       <HStack
         minW={"100vw"}
         minH={"100vh"}
