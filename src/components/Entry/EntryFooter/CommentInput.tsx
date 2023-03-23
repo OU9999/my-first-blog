@@ -136,8 +136,8 @@ export default function CommentInput({ docId }: ICommentInputProps) {
             </Box>
             <VStack
               alignItems={"flex-start"}
-              w={"55%"}
-              h={"50vh"}
+              w={"3xl"}
+              h={"sm"}
               rounded={"2xl"}
               boxShadow={"dark-lg"}
               boxSizing="border-box"

@@ -83,10 +83,6 @@ export default function GBInput() {
   const userIconPicInput = useRef<HTMLInputElement>(null);
   const guestBookImgInput = useRef<HTMLInputElement>(null);
 
-  const onAvatarClicked = () => {
-    setUserIcon(userIcons[Math.floor(Math.random() * userIcons.length)]);
-  };
-
   const onUserIconPicButtonClicked = (e: any) => {
     userIconPicInput?.current?.click();
   };
@@ -223,8 +219,8 @@ export default function GBInput() {
             </Box>
             <VStack
               alignItems={"flex-start"}
-              w={"55%"}
-              h={"50vh"}
+              w={"3xl"}
+              h={"md"}
               rounded={"2xl"}
               boxShadow={"dark-lg"}
               boxSizing="border-box"
@@ -235,54 +231,58 @@ export default function GBInput() {
             >
               <HStack width={"100%"} p={5} gap={3}>
                 {userIconPic ? (
-                  <Avatar src={userIconPic} />
+                  <Box>
+                    <Avatar
+                      src={userIconPic}
+                      cursor={"pointer"}
+                      onClick={onUserIconPicButtonClicked}
+                    />
+                  </Box>
                 ) : (
                   <Avatar
                     icon={userIcon.icon}
-                    onClick={onAvatarClicked}
+                    onClick={onUserIconPicButtonClicked}
                     cursor={"pointer"}
                   />
                 )}
+                <input
+                  type="file"
+                  onChange={onUserIconPicFileChange}
+                  accept="image/*"
+                  ref={userIconPicInput}
+                  style={{ display: "none" }}
+                />
 
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<FaUser color="gray.300" />}
-                  />
-                  <Input
-                    type="text"
-                    placeholder="닉네임"
-                    variant="filled"
-                    value={nickname}
-                    onChange={(e) => setNickname(e.currentTarget.value)}
-                  />
-                </InputGroup>
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<FaLock color="gray.300" />}
-                  />
-                  <Input
-                    type="password"
-                    placeholder="비밀번호"
-                    variant="filled"
-                    value={password}
-                    onChange={(e) => setPassword(e.currentTarget.value)}
-                  />
-                </InputGroup>
                 <HStack>
-                  <Box>
-                    <Button onClick={onUserIconPicButtonClicked}>
-                      프로필 사진 업로드
-                    </Button>
-                    <input
-                      type="file"
-                      onChange={onUserIconPicFileChange}
-                      accept="image/*"
-                      ref={userIconPicInput}
-                      style={{ display: "none" }}
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<FaUser color="gray.300" />}
                     />
-                  </Box>
+                    <Input
+                      type="text"
+                      placeholder="닉네임"
+                      variant="filled"
+                      value={nickname}
+                      onChange={(e) => setNickname(e.currentTarget.value)}
+                    />
+                  </InputGroup>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<FaLock color="gray.300" />}
+                    />
+                    <Input
+                      type="password"
+                      placeholder="비밀번호"
+                      variant="filled"
+                      value={password}
+                      onChange={(e) => setPassword(e.currentTarget.value)}
+                    />
+                  </InputGroup>
+                </HStack>
+
+                <HStack>
                   <Box>
                     <Button onClick={onGuestBookImgButtonClicked}>
                       방명록 이미지 첨부

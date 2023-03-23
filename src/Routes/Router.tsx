@@ -7,6 +7,7 @@ import GuestBook from "./GuestBook";
 import Home from "./Home";
 import Notes from "./Notes";
 import NotFound from "./NotFound";
+import Tester from "./Tester";
 import Write from "./Write";
 
 const router = createBrowserRouter(
@@ -45,6 +46,10 @@ const router = createBrowserRouter(
         {
           path: "guestbook",
           element: <GuestBook />,
+        },
+        {
+          path: "tester",
+          element: <Tester />,
         },
       ],
     },

@@ -1,4 +1,4 @@
-import { Center } from "@chakra-ui/react";
+import { Center, useColorModeValue } from "@chakra-ui/react";
 import {
   collection,
   onSnapshot,
@@ -27,6 +27,7 @@ export interface IComment {
 
 export default function Comments({ docId }: ICommentsProps) {
   const [comments, setComments] = useState<IComment[] | undefined>(undefined);
+  const bgColor = useColorModeValue("#fff", "#1A202C");
 
   const getComments = async (docId: string) => {
     try {
@@ -51,7 +52,7 @@ export default function Comments({ docId }: ICommentsProps) {
 
   return (
     <>
-      <Center w="full" h={"auto"} flexDir={"column"} gap={30}>
+      <Center w="full" h={"auto"} flexDir={"column"} gap={30} bgColor={bgColor}>
         {comments?.map((comment) => (
           <Comment
             key={comment.id}

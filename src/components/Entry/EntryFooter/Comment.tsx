@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  Center,
   Heading,
   HStack,
   IconButton,
@@ -74,6 +75,7 @@ export default function Comment({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const bgColor = useColorModeValue("#fff", "#2D3748");
+  const divColor = useColorModeValue("#fff", "#1A202C");
   const date = dateFormatter(createdAt);
 
   const onUpdateButtonClick = async () => {
@@ -134,7 +136,8 @@ export default function Comment({
   return (
     <>
       <VStack
-        w="55%"
+        w={"3xl"}
+        h={"auto"}
         rounded={"2xl"}
         boxShadow={"dark-lg"}
         p={"10"}
@@ -216,18 +219,26 @@ export default function Comment({
       {isReply ? (
         <CommentReplyInput setIsReply={setIsReply} commentId={commentId} />
       ) : null}
-      {replyComments?.map((reply) => (
-        <CommentReply
-          key={reply.id}
-          id={reply.id}
-          nickname={reply.nickname}
-          password={reply.password}
-          avatar={reply.avatar}
-          comment={reply.comment}
-          createdAt={reply.createdAt}
-          edited={reply.edited}
-        />
-      ))}
+      <Center
+        w="full"
+        h={"auto"}
+        flexDir={"column"}
+        gap={30}
+        bgColor={divColor}
+      >
+        {replyComments?.map((reply) => (
+          <CommentReply
+            key={reply.id}
+            id={reply.id}
+            nickname={reply.nickname}
+            password={reply.password}
+            avatar={reply.avatar}
+            comment={reply.comment}
+            createdAt={reply.createdAt}
+            edited={reply.edited}
+          />
+        ))}
+      </Center>
       <CommentDeleteModal
         isOpen={isOpen}
         onClose={onClose}

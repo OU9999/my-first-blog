@@ -183,7 +183,6 @@ export default function MainPage() {
 
   useEffect(() => {
     setBgAndQuote();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -193,6 +192,7 @@ export default function MainPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startAnimation]);
+
   return (
     <>
       <BackGround

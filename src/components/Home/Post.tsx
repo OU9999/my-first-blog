@@ -74,8 +74,8 @@ export default function Post({
       <PostDiv
         position={"relative"}
         rounded="2xl"
-        width={"65vw"}
-        height={"35vh"}
+        w="4xl"
+        h="xs"
         overflow={"hidden"}
         boxShadow={"dark-lg"}
         bgColor={mdBgColor}
@@ -90,11 +90,12 @@ export default function Post({
           spacing={0}
         >
           <VStack
-            width={"60%"}
+            width={"50%"}
             height={"100%"}
             alignItems={"flex-start"}
             p={10}
             gap={2}
+            pl={8}
           >
             <Link
               to={{
@@ -139,13 +140,16 @@ export default function Post({
                 h={"24"}
                 noOfLines={5}
                 data-color-mode={colorMode}
-                zIndex={2}
+                zIndex={1}
+                overflow="hidden"
+                wordBreak={"break-all"}
               >
                 <NoStyle>
                   <MDEditor.Markdown
                     source={md}
                     style={{
                       backgroundColor: mdBgColor,
+                      wordBreak: "break-all",
                     }}
                   />
                 </NoStyle>
@@ -160,11 +164,12 @@ export default function Post({
             </Box>
           </VStack>
           <VStack
-            width={"40%"}
+            width={"50%"}
             height={"100%"}
             overflow={"hidden"}
             cursor={"pointer"}
             onClick={onThumbnailClicked}
+            zIndex={5}
           >
             {thumbnailUrl === "" ? (
               <Image

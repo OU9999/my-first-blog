@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Center,
   Heading,
@@ -80,12 +81,12 @@ export default function CommentReply({
 
   return (
     <>
-      <Center w="55%" h="auto">
-        <Center w={"10%"} fontSize={"4xl"}>
+      <Center w="full" h="auto">
+        <Center w={"24"} fontSize={"4xl"}>
           <FiCornerDownRight />
         </Center>
         <VStack
-          w="90%"
+          w="2xl"
           rounded={"2xl"}
           boxShadow={"dark-lg"}
           p={"10"}
