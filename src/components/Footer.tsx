@@ -1,12 +1,27 @@
-import { Box, HStack, Link, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Link,
+  Text,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
 import { SiFirebase, SiReact, SiTypescript } from "react-icons/si";
 
 export default function Footer() {
+  const bgColor = useColorModeValue("#fff", "#1A202C");
   return (
     <>
-      <VStack width={"100vw"} mt={100} mb={10}>
+      <VStack
+        position={"relative"}
+        width={"100vw"}
+        pt={100}
+        pb={50}
+        zIndex={5}
+        bgColor={bgColor}
+      >
         <HStack fontSize={"md"} fontWeight={"semibold"}>
           <Text color={"gray"}>STACK :</Text>
           <Box

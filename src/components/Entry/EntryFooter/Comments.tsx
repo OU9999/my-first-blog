@@ -52,7 +52,7 @@ export default function Comments({ docId }: ICommentsProps) {
 
   return (
     <>
-      <Center w="full" h={"auto"} flexDir={"column"} gap={30} bgColor={bgColor}>
+      <Center w="full" h={"auto"} flexDir={"column"} gap={4} bgColor={bgColor}>
         {comments?.map((comment) => (
           <Comment
             key={comment.id}

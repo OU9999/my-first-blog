@@ -149,6 +149,7 @@ export default function GBComment({
   return (
     <>
       <VStack
+        position={"relative"}
         w="3xl"
         rounded={"2xl"}
         boxShadow={"dark-lg"}

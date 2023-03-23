@@ -43,7 +43,15 @@ export default function GBComments() {
 
   return (
     <>
-      <Center w="full" h={"auto"} flexDir="column" gap={30}>
+      <Center
+        w="full"
+        h={"auto"}
+        flexDir="column"
+        gap={30}
+        zIndex={6}
+        position="relative"
+        pb={"28"}
+      >
         {comments?.map((comment) => (
           <GBComment
             key={comment.id}

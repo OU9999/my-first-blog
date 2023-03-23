@@ -25,7 +25,7 @@ const BackGroundComment = styled(motion.div)<{ bg: string | undefined }>`
   width: 100vw;
   height: 200vh;
   position: absolute;
-  z-index: -1;
+  z-index: 2;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -38,7 +38,7 @@ const BackGroundCoverComment = styled.div`
   height: 200vh;
   position: absolute;
   top: -0.5rem;
-  z-index: 1;
+  z-index: 3;
   background: repeating-linear-gradient(
     0deg,
     #0e0d0e 25%,
@@ -99,59 +99,70 @@ export default function EntryFooter({ category, docId }: IEntryFooterProps) {
 
   return (
     <>
-      <Box py={"10"} />
-      <Box width={"full"} height={"auto"} position={"relative"}>
-        <BackGroundComment bg={backgroundImage} />
-        <BackGroundCoverComment />
-      </Box>
-      <Box
-        width={"full"}
-        height={"auto"}
-        zIndex={2}
-        paddingX={20}
-        paddingTop={20}
-      >
-        <Flex justifyContent={"space-between"} alignItems={"center"}>
-          <Heading
-            fontSize="6xl"
-            fontWeight="extrabold"
-            textShadow={"black 1px 0 10px"}
-            color={"white"}
-          >
-            카테고리의 다른글
-          </Heading>
-          <Button colorScheme={"twitter"} onClick={onOtherNotesClicked}>
-            다른글 더 보기
-          </Button>
-        </Flex>
-      </Box>
+      <Box w="full" zIndex={1} position="relative" pb={"28"}>
+        <Box py={"10"} />
+        <Box width={"full"} height={"auto"} position={"relative"}>
+          <BackGroundComment bg={backgroundImage} />
+          <BackGroundCoverComment />
+        </Box>
+        <Box
+          width={"full"}
+          height={"auto"}
+          position="relative"
+          zIndex={4}
+          paddingX={20}
+          paddingTop={20}
+        >
+          <Flex justifyContent={"space-between"} alignItems={"center"}>
+            <Heading
+              fontSize="6xl"
+              fontWeight="extrabold"
+              textShadow={"black 1px 0 10px"}
+              color={"white"}
+            >
+              카테고리의 다른글
+            </Heading>
+            <Button colorScheme={"twitter"} onClick={onOtherNotesClicked}>
+              다른글 더 보기
+            </Button>
+          </Flex>
+        </Box>
 
-      {/* NoteCards */}
-      <Grid
-        templateColumns={"repeat(3, 1fr)"}
-        px={10}
-        paddingTop={10}
-        columnGap={8}
-        rowGap={16}
-        zIndex={2}
-      >
-        {notes?.map((note) => (
-          <NoteCard
-            key={note.id}
-            title={note.title}
-            thumbnailUrl={note.thumbnailUrl}
-            md={note.md}
-            category={note.category}
-            link={note.id}
-            createdAt={note.createdAt}
-          />
-        ))}
-      </Grid>
+        {/* NoteCards */}
+        <Grid
+          templateColumns={"repeat(3, 1fr)"}
+          px={10}
+          paddingTop={10}
+          columnGap={8}
+          rowGap={16}
+          position="relative"
+          zIndex={4}
+        >
+          {notes?.map((note) => (
+            <NoteCard
+              key={note.id}
+              title={note.title}
+              thumbnailUrl={note.thumbnailUrl}
+              md={note.md}
+              category={note.category}
+              link={note.id}
+              createdAt={note.createdAt}
+            />
+          ))}
+        </Grid>
 
-      {/* comments */}
-      <Box w={"full"} height={"auto"} zIndex={2} pt={"32"}>
-        <CommentInput docId={docId} />
-        <Comments docId={docId} />
+        {/* comments */}
+        <Box
+          w={"full"}
+          height={"auto"}
+          pt={32}
+          position="relative"
+          zIndex={5}
+          bottom={-30}
+        >
+          <CommentInput docId={docId} />
+          <Comments docId={docId} />
+        </Box>
       </Box>
     </>
   );

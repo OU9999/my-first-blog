@@ -224,6 +224,7 @@ export default function Comment({
         h={"auto"}
         flexDir={"column"}
         gap={30}
+        mt={10}
         bgColor={divColor}
       >
         {replyComments?.map((reply) => (
