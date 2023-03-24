@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Heading } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Grid, Heading } from "@chakra-ui/react";
 import {
   collection,
   limit,
@@ -129,12 +129,10 @@ export default function EntryFooter({ category, docId }: IEntryFooterProps) {
         </Box>
 
         {/* NoteCards */}
-        <Grid
-          templateColumns={"repeat(3, 1fr)"}
-          px={10}
+        <Center
+          w="full"
           paddingTop={10}
-          columnGap={8}
-          rowGap={16}
+          gap={20}
           position="relative"
           zIndex={4}
         >
@@ -149,7 +147,7 @@ export default function EntryFooter({ category, docId }: IEntryFooterProps) {
               createdAt={note.createdAt}
             />
           ))}
-        </Grid>
+        </Center>
 
         {/* comments */}
         <Box

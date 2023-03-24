@@ -43,6 +43,7 @@ export default function LoginPopover() {
       >
         <PopoverTrigger>
           <Avatar
+            zIndex={99}
             size="md"
             name="Ryan Florence"
             src={

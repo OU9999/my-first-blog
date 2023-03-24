@@ -13,7 +13,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 import { FaEye, FaRegCommentDots } from "react-icons/fa";
 import { BiTimeFive } from "react-icons/bi";
@@ -23,19 +23,20 @@ import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 import reset from "styled-reset";
 
-// const cardVariants: Variants = {
-//   show: (test: number) => {
-//     return {
-//       opacity: [0, 1],
-//       y: [-100, 0],
-//       transition: {
-//         duration: 0.8,
-//         type: "spring",
-//         stiffness: 200,
-//       },
-//     };
-//   },
-// };
+const cardVariants: Variants = {
+  show: (test: number) => {
+    return {
+      opacity: [0, 1],
+      y: [-100, 0],
+      transition: {
+        duration: 0.8,
+        type: "spring",
+        stiffness: 200,
+        delay: 0.1 * test,
+      },
+    };
+  },
+};
 
 const NoStyle = styled.div`
   ${reset}
@@ -81,12 +82,10 @@ export default function NoteCard({
           maxW="sm"
           minH={"sm"}
           as={motion.div}
-          // variants={cardVariants}
-          // initial="wait"
-          // animate="show"
-          // exit="exit"
-          // custom={test}
+          variants={cardVariants}
           boxShadow={"2xl"}
+          whileInView={"show"}
+          viewport={{ once: true }}
           onHoverStart={() => setMagnification(true)}
           onHoverEnd={() => setMagnification(false)}
         >

@@ -58,6 +58,7 @@ export default function CategorySelected() {
           as={motion.div}
           variants={gridVariants}
           animate={gridAni}
+          pb={20}
         >
           {showAll
             ? notes &&

@@ -166,7 +166,6 @@ export default function Notes() {
               </MenuList>
             </Menu>
           </HStack>
-
           <Outlet context={{ selectedCategory, notes, categorys }} />
         </VStack>
       </VStack>

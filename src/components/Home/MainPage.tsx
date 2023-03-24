@@ -315,8 +315,8 @@ export default function MainPage() {
             initial={"normal"}
             animate={mainBoxAni}
             backgroundColor={"red"}
-            width="65vw"
-            height={"35vh"}
+            width="5xl"
+            height="xs"
             background={"rgba(0,0,0,0.5)"}
             borderRadius={"3rem"}
             fontSize={"4xl"}

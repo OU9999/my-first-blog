@@ -61,6 +61,9 @@ const CustomStyle = styled.div`
   blockquote {
     background-color: gray;
     border: none;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
   }
 `;
 

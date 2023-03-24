@@ -5,6 +5,8 @@ import {
   DarkMode,
   HStack,
   IconButton,
+  LightMode,
+  Text,
   useColorMode,
   useColorModeValue,
   useDisclosure,
@@ -47,7 +49,7 @@ export default function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigation = useNavigate();
   const { toggleColorMode } = useColorMode();
-  const twitterColor = useColorModeValue("twitter.500", "twitter.200");
+  const twitterColor = useColorModeValue("twitter.500", "twitter.500");
   const Icon = useColorModeValue(FaMoon, FaSun);
   const { scrollY } = useScroll();
   const headerAni = useAnimation();
@@ -60,7 +62,9 @@ export default function Header() {
   const isLogin = useRecoilValue(isLoginAtom);
   const isNotes = useRecoilValue(isNotesAtom);
   const setSelectedCategory = useSetRecoilState(selectedCategoryAtom);
+  const { scrollYProgress } = useScroll();
 
+  console.log(scrollYProgress);
   const onHomeClick = () => {
     navigation("/");
   };
@@ -126,90 +130,116 @@ export default function Header() {
         onHoverEnd={() => hoverEnd()}
         boxShadow={boxShadow ? "dark-lg" : "none"}
         boxSizing={"border-box"}
+        transform="auto"
       >
         <HStack>
           <Box
+            zIndex={99}
             transition={"0.3s"}
             rounded={"md"}
             fontWeight={"bold"}
             cursor={"pointer"}
             onClick={onHomeClick}
             bgColor={homeMatch ? twitterColor : undefined}
+            _hover={{
+              bgColor: "rgba(0,0,0,0.5)",
+            }}
           >
             <DarkMode>
-              <Button
+              <Text
                 transition={"0.3s"}
-                colorScheme={"twitter"}
-                variant={"ghost"}
+                px={4}
+                py={2}
                 textColor={!textColor ? "white" : "black"}
+                textShadow={"#fff 1px 0 10px"}
               >
                 Home
-              </Button>
+              </Text>
             </DarkMode>
           </Box>
           <Box
+            zIndex={99}
             transition={"0.3s"}
             rounded={"md"}
             fontWeight={"bold"}
             cursor={"pointer"}
             onClick={onNotesClick}
             bgColor={notesMatch ? twitterColor : undefined}
+            _hover={{
+              bgColor: "rgba(0,0,0,0.5)",
+            }}
           >
             <DarkMode>
-              <Button
+              <Text
                 transition={"0.3s"}
-                colorScheme={"twitter"}
-                variant={"ghost"}
+                px={4}
+                py={2}
                 textColor={!textColor ? "white" : "black"}
+                textShadow={"#fff 1px 0 10px"}
               >
                 Notes
-              </Button>
+              </Text>
             </DarkMode>
           </Box>
           <Box
+            zIndex={99}
             transition={"0.3s"}
             rounded={"md"}
             fontWeight={"bold"}
             cursor={"pointer"}
             onClick={onGuestBookClick}
             bgColor={guestBookMatch ? twitterColor : undefined}
+            _hover={{
+              bgColor: "rgba(0,0,0,0.5)",
+            }}
           >
             <DarkMode>
-              <Button
+              <Text
                 transition={"0.3s"}
-                colorScheme={"twitter"}
-                variant={"ghost"}
+                px={4}
+                py={2}
                 textColor={!textColor ? "white" : "black"}
+                textShadow={"#fff 1px 0 10px"}
               >
                 Guest Book
-              </Button>
+              </Text>
             </DarkMode>
           </Box>
 
           <Box
+            zIndex={99}
             transition={"0.3s"}
             rounded={"md"}
             fontWeight={"bold"}
             cursor={"pointer"}
             onClick={onWriteClick}
+            _hover={{
+              bgColor: "rgba(0,0,0,0.5)",
+            }}
           >
             <DarkMode>
-              <Button
+              <Text
                 transition={"0.3s"}
-                colorScheme={"twitter"}
-                variant={"ghost"}
+                px={4}
+                py={2}
                 textColor={!textColor ? "white" : "black"}
+                textShadow={"#fff 1px 0 10px"}
               >
                 Write
-              </Button>
+              </Text>
             </DarkMode>
           </Box>
 
           <IconButton
+            zIndex={99}
             aria-label="toggleColorMode"
             onClick={toggleColorMode}
             variant={"solid"}
             colorScheme={"twitter"}
+            bgColor={notesMatch ? twitterColor : undefined}
+            _hover={{
+              bgColor: "rgba(0,0,0,0.5)",
+            }}
             icon={<Icon />}
           />
         </HStack>
@@ -217,12 +247,26 @@ export default function Header() {
           <LoginPopover />
         ) : (
           <IconButton
+            zIndex={99}
             onClick={onOpen}
             aria-label="usericon"
             colorScheme={"twitter"}
             icon={<FaUserCircle />}
           />
         )}
+        <Box
+          bgColor="twitter.500"
+          opacity={0.3}
+          zIndex={1}
+          w="110vw"
+          h="10vh"
+          as={motion.div}
+          style={{ scaleX: scrollYProgress }}
+          transformOrigin="left"
+          position="absolute"
+          left={-3}
+          top={0}
+        ></Box>
       </HStack>
       <Avatar
         src={
