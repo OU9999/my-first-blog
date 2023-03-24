@@ -40,7 +40,7 @@ const router = createBrowserRouter(
           element: <WriteEdit />,
         },
         {
-          path: "entry/:pageid",
+          path: "entry/:noteid",
           element: <Entry />,
         },
         {
