@@ -75,7 +75,6 @@ export default function Comment({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const bgColor = useColorModeValue("#fff", "#2D3748");
-  const divColor = useColorModeValue("#fff", "#1A202C");
   const date = dateFormatter(createdAt);
 
   const onUpdateButtonClick = async () => {
@@ -136,6 +135,7 @@ export default function Comment({
   return (
     <>
       <VStack
+        position={"relative"}
         w={"3xl"}
         h={"auto"}
         rounded={"2xl"}
@@ -219,14 +219,7 @@ export default function Comment({
       {isReply ? (
         <CommentReplyInput setIsReply={setIsReply} commentId={commentId} />
       ) : null}
-      <Center
-        w="full"
-        h={"auto"}
-        flexDir={"column"}
-        gap={30}
-        mt={10}
-        bgColor={divColor}
-      >
+      <Center w="full" h={"auto"} flexDir={"column"} gap={10}>
         {replyComments?.map((reply) => (
           <CommentReply
             key={reply.id}

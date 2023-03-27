@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   HStack,
   Input,
@@ -74,7 +75,6 @@ export default function CommentInput({ docId }: ICommentInputProps) {
   const [password, setPassword] = useState<string>("");
   const [comment, setComment] = useState<string>("");
 
-  const bgColor = useColorModeValue("white", "#1A202C");
   const inputBgColor = useColorModeValue("#fff", "#2D3748");
   const toast = useToast();
 
@@ -128,7 +128,8 @@ export default function CommentInput({ docId }: ICommentInputProps) {
 
   return (
     <>
-      <Box bgColor={bgColor} w={"full"} py={"24"}>
+      <Divider mt={"24"} border={"5px solid"} />
+      <Box w={"full"} pb={"24"}>
         <Center w={"full"}>
           <VStack w={"full"}>
             <Box fontSize={"9xl"} my={"10"}>

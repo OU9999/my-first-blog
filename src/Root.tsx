@@ -30,9 +30,11 @@ export default function Root() {
         <title>OU9999's Blog!</title>
       </Helmet>
       <ScrollToTop />
+
       {isWrite ? null : <Header />}
       <Outlet />
       {isWrite ? null : <Footer />}
+
       <StartModal />
     </>
   );

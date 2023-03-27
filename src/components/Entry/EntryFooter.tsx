@@ -1,4 +1,11 @@
-import { Box, Button, Center, Flex, Grid, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import {
   collection,
   limit,
@@ -23,7 +30,7 @@ import Comments from "./EntryFooter/Comments";
 
 const BackGroundComment = styled(motion.div)<{ bg: string | undefined }>`
   width: 100vw;
-  height: 200vh;
+  height: 100vh;
   position: absolute;
   z-index: 2;
   background-repeat: no-repeat;
@@ -35,7 +42,7 @@ const BackGroundComment = styled(motion.div)<{ bg: string | undefined }>`
 
 const BackGroundCoverComment = styled.div`
   width: 100vw;
-  height: 200vh;
+  height: 100vh;
   position: absolute;
   top: -0.5rem;
   z-index: 3;
@@ -62,6 +69,8 @@ export default function EntryFooter({ category, docId }: IEntryFooterProps) {
   const [notes, setNotes] = useState<INotes[] | undefined>(undefined);
   const [selectedCategory, setSelectedCategory] =
     useRecoilState<string>(selectedCategoryAtom);
+
+  const bgColor = useColorModeValue("white", "#1A202C");
 
   const getNotes = async (category: string) => {
     try {
@@ -153,10 +162,9 @@ export default function EntryFooter({ category, docId }: IEntryFooterProps) {
         <Box
           w={"full"}
           height={"auto"}
-          pt={32}
           position="relative"
           zIndex={5}
-          bottom={-30}
+          bgColor={bgColor}
         >
           <CommentInput docId={docId} />
           <Comments docId={docId} />

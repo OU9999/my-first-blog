@@ -134,9 +134,9 @@ export default function Post({
                 <Text>{date}</Text>
               </HStack>
             </HStack>
-            <Box position={"relative"}>
+            <Box position={"relative"} overflow="hidden">
               <Box
-                width={"auto"}
+                width={"sm"}
                 h={"24"}
                 noOfLines={5}
                 data-color-mode={colorMode}

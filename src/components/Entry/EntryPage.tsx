@@ -212,7 +212,9 @@ export default function EntryPage() {
         </CustomStyle>
       </Box>
 
-      <EntryFooter category={detail?.category as string} docId={docId} />
+      <Box position={"relative"} w="full" h="auto">
+        <EntryFooter category={detail?.category as string} docId={docId} />
+      </Box>
 
       <DeleteModal
         isOpen={isOpen}

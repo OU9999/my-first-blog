@@ -17,9 +17,9 @@ export default function Footer() {
       <VStack
         position={"relative"}
         width={"100vw"}
-        pt={100}
-        pb={50}
         zIndex={5}
+        pt={24}
+        pb={10}
         bgColor={bgColor}
       >
         <HStack fontSize={"md"} fontWeight={"semibold"}>

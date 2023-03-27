@@ -70,7 +70,7 @@ export default function CommentPopover({
             </Tooltip>
           </Box>
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent zIndex={99} position={"relative"}>
           <PopoverHeader fontWeight="semibold">비밀번호 확인</PopoverHeader>
           <PopoverArrow />
           <PopoverCloseButton />
